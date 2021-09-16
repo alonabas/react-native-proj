@@ -10,8 +10,8 @@ export const EditProductScreen = ({}) => {
 };
 
 export const EditProductOptions = ({ route }) => {
-    console.log(route)
     return {
+        presentation: 'modal',
         headerTitle: route?.params?.productId ? `Edit ${route?.params?.productId}` : `New Product`,
   }
 }

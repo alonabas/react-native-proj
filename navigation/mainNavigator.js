@@ -2,26 +2,37 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import {ShopScreen} from '../screens/ShopScreen';
-import {OrdersScreen} from '../screens/OrdersScreen';
-import {ProductsScreen} from '../screens/ProductsScreen';
+import {ShopScreen, ShopScreenOptions} from '../screens/ShopScreen';
+import {OrdersScreen, OrdersScreenOptions} from '../screens/OrdersScreen';
+import {ProductsScreen, ProductsScreenOptions} from '../screens/ProductsScreen';
 import React from "react";
 import {CartScreen} from '../screens/CartScreen';
 import {ProductDetailsScreen} from '../screens/ProductDetailsScreen';
 import {EditProductScreen, EditProductOptions} from '../screens/EditProductScreen';
+import {COLORS} from '../constants/colors';
+
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
-const NativeStack = createNativeStackNavigator();
 
-const defaultOptions = { headerShown: false }
+const hideHeaderOptions = { 
+  headerShown: false 
+}
+
+const basicNavigationOptions = {
+  headerTintColor: COLORS.main,
+  headerTitleStyle: {
+    color: 'black'
+  },
+  headerTitleAlign: 'center'
+}
 
 const ShopStackNavigator = ({}) => {
     return (
-        <Stack.Navigator >
+        <Stack.Navigator screenOptions={basicNavigationOptions}>
             <Stack.Screen name="shop" 
                           component={ShopScreen}
-                          options={{title: 'Shop'}}/>
+                          options={ShopScreenOptions}/>
             <Stack.Screen name="cart" 
                           component={CartScreen} 
                           options={{title: 'Shopping cart'}}/>
@@ -35,39 +46,46 @@ const ShopStackNavigator = ({}) => {
 
 const ProductsStackNavigator = ({}) => {
     return (
-        <Stack.Navigator>
+        <Stack.Navigator screenOptions={basicNavigationOptions}>
             <Stack.Screen name="listProducts" 
-                          options={{title: 'Your products'}}
+                          options={ProductsScreenOptions}
                           component={ProductsScreen}/>
             <Stack.Screen name="editProduct" 
                           options={EditProductOptions}
                           component={EditProductScreen} />
         </Stack.Navigator>
       );
-
 }
 
+const OrdersStackNavigator = ({}) => (
+  <Stack.Navigator screenOptions={basicNavigationOptions}>
+    <Stack.Screen name="orders" 
+                  options={OrdersScreenOptions}
+                  component={OrdersScreen}/>
+  </Stack.Navigator>
+);
 
-export const DrawerNavigator = ({}) => {
+
+export const MainNavigator = ({}) => {
     return (
-        <Drawer.Navigator screenOptions={defaultOptions}>
+        <Drawer.Navigator>
           <Drawer.Screen name="shopNav" 
-                         options={{title:'Shop'}} 
+                         options={{title:'Shop', ...hideHeaderOptions}} 
                          component={ShopStackNavigator} />
-          <Drawer.Screen name="orders" 
-                         options={{title: 'Orders'}} 
-                         component={OrdersScreen} />
+          <Drawer.Screen name="ordersNav" 
+                         options={{title: 'Orders', ...hideHeaderOptions}} 
+                         component={OrdersStackNavigator} />
           <Drawer.Screen name="productsNav" 
-                         options={{title: 'Manage Products'}} 
+                         options={{title: 'Manage Products', ...hideHeaderOptions}} 
                          component={ProductsStackNavigator} />
         </Drawer.Navigator>
       );
 }
 
-export const MainNavigator = ({}) => {
-    return (
-        <NativeStack.Navigator screenOptions={defaultOptions}>
-          <NativeStack.Screen name="drawerNav" component={DrawerNavigator} />
-        </NativeStack.Navigator>
-      );
-}
+// export const MainNavigator = ({}) => {
+//     return (
+//         <NativeStack.Navigator screenOptions={defaultOptions}>
+//           <NativeStack.Screen name="drawerNav" component={DrawerNavigator} />
+//         </NativeStack.Navigator>
+//       );
+// }

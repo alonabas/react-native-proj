@@ -1,39 +1,41 @@
 import React from "react";
-import {View, Text, Button, StyleSheet, TouchableHighlight} from 'react-native';
+import {View, Text, TouchableHighlight} from 'react-native';
 import {Ionicons} from "@expo/vector-icons";
 import { COLORS } from '../constants/colors';
+import {DrawerButton} from '../components/DrawerButton';
+import {globalStyles} from '../constants/styles';
 
-const AddProductButton = (props) => {
-    return (
-        <TouchableHighlight {...props} 
-                            activeOpacity={0.9} 
-                            underlayColor={COLORS.accent} 
-                            style={styles.buttonContainer}>
-                <Ionicons name='ios-restaurant' size={25} color={COLORS.main}/>
-        </TouchableHighlight>
-    )
-}
+const AddProductButton = (props) => (
+    <TouchableHighlight {...props}
+                        activeOpacity={0.9} 
+                        title='Add Product'
+                        underlayColor={COLORS.accent} 
+                        style={globalStyles.menuButtonContainer}>
+        <Ionicons name='add-circle-outline' size={30} color={COLORS.main}/>
+    </TouchableHighlight>
+)
 
 export const ProductsScreen = ({navigation}) => {
     return (
-        <View style={styles.main}>
+        <View style={globalStyles.main}>
             <Text>Manage Products Screen</Text>
-            <AddProductButton onPress={() => navigation.navigate('editProduct')} title='Add Product'/>
+            {/* <AddProductButton onPress={() => navigation.navigate('editProduct')} 
+                              title='Add Product'/> */}
         </View>
     )
 };
 
 
-const styles = StyleSheet.create({
-    main: {
-        flex: 1, 
-        alignItems: 'center', 
-        justifyContent: 'center'
-    },
-    buttonContainer: {
-        padding: 14,
-        borderRadius: 4,
-        margin: 10,
-        
-    }
-})
+export const ProductsScreenOptions = ({ route, navigation }) => {
+    return {
+        headerLeft: (props) => (
+            <DrawerButton {...props} onPress={() => navigation.openDrawer()}/>
+        ),
+        headerRight: (props) => (
+            <AddProductButton {...props} 
+                              onPress={() => navigation.navigate({name: 'editProduct'})} />
+        ),
+        headerTitle: 'Your products'
+  }
+}
+
