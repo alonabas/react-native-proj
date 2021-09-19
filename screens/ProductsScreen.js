@@ -1,9 +1,12 @@
 import React from "react";
-import {View, Text, TouchableHighlight} from 'react-native';
+import {View, Text, TouchableHighlight, ScrollView} from 'react-native';
 import {Ionicons} from "@expo/vector-icons";
 import { COLORS } from '../constants/colors';
 import {DrawerButton} from '../components/DrawerButton';
 import {globalStyles} from '../constants/styles';
+import { useSelector } from "react-redux";
+import {getListOfProducts} from '../store/selectors/products';
+import {DisplayProduct} from '../components/DisplayProduct';
 
 const AddProductButton = (props) => (
     <TouchableHighlight {...props}
@@ -16,12 +19,13 @@ const AddProductButton = (props) => (
 )
 
 export const ProductsScreen = ({navigation}) => {
+    const productIds = useSelector(getListOfProducts());
     return (
-        <View style={globalStyles.main}>
-            <Text>Manage Products Screen</Text>
-            {/* <AddProductButton onPress={() => navigation.navigate('editProduct')} 
-                              title='Add Product'/> */}
-        </View>
+        <ScrollView >
+            {productIds.map(e => (
+                <DisplayProduct id={e} key={e}/>
+            ))}
+        </ScrollView>
     )
 };
 
