@@ -7,7 +7,7 @@ import {OrdersScreen, OrdersScreenOptions} from '../screens/OrdersScreen';
 import {ProductsScreen, ProductsScreenOptions} from '../screens/ProductsScreen';
 import React from "react";
 import {CartScreen} from '../screens/CartScreen';
-import {ProductDetailsScreen} from '../screens/ProductDetailsScreen';
+import {ProductDetailsScreen, ProductDetailsOptions} from '../screens/ProductDetailsScreen';
 import {EditProductScreen, EditProductOptions} from '../screens/EditProductScreen';
 import {COLORS} from '../constants/colors';
 
@@ -38,7 +38,7 @@ const ShopStackNavigator = ({}) => {
                           options={{title: 'Shopping cart'}}/>
             <Stack.Screen name="productDetails" 
                           component={ProductDetailsScreen} 
-                          options={{title: 'Product details'}}
+                          options={ProductDetailsOptions}
                           />
         </Stack.Navigator>
       );

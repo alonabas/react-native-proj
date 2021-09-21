@@ -5,8 +5,9 @@ import { COLORS } from '../constants/colors';
 import {DrawerButton} from '../components/DrawerButton';
 import {globalStyles} from '../constants/styles';
 import { useSelector } from "react-redux";
-import {getListOfProducts} from '../store/selectors/products';
-import {DisplayProduct} from '../components/DisplayProduct';
+import {getListOfProducts} from '../store/selectors/myProducts';
+import {NoItems} from '../components/NoItems';
+import { MyProduct } from "../components/MyProduct";
 
 const AddProductButton = (props) => (
     <TouchableHighlight {...props}
@@ -20,10 +21,15 @@ const AddProductButton = (props) => (
 
 export const ProductsScreen = ({navigation}) => {
     const productIds = useSelector(getListOfProducts());
+    if (productIds.length === 0) {
+        return (
+            <NoItems>You don't have any products</NoItems>
+        )
+    }
     return (
         <ScrollView >
             {productIds.map(e => (
-                <DisplayProduct id={e} key={e}/>
+                <MyProduct id={e} key={e}/>
             ))}
         </ScrollView>
     )

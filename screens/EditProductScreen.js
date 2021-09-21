@@ -4,7 +4,7 @@ import {Ionicons} from "@expo/vector-icons";
 import { COLORS } from '../constants/colors';
 import {globalStyles} from '../constants/styles';
 import { useDispatch, useSelector } from "react-redux";
-import {PRODUCTS_MODULE_NAME} from '../store/constants';
+import {MY_PRODUCTS_MODULE_NAME} from '../store/constants';
 import { Product } from "../model/product";
 import {saveProduct} from '../store/actions/products';
 import { useNavigation, useRoute } from "@react-navigation/core";
@@ -22,7 +22,7 @@ const CreateProductContext = React.createContext({
 });
 
 const ProductState = ({productId}) => {
-    const product = useSelector(state => state?.[PRODUCTS_MODULE_NAME]?.products?.[productId] ?? {});
+    const product = useSelector(state => state?.[MY_PRODUCTS_MODULE_NAME]?.products?.[productId] ?? {});
     const [title, setTitle] = React.useState(product.title);
     const [price, setPrice] = React.useState(product.price);
     const [description, setDescription] = React.useState(product.description);

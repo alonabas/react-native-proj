@@ -1,10 +1,13 @@
 import React from "react";
-import {View, Text, TouchableHighlight} from 'react-native';
+import {ScrollView, Text, TouchableHighlight} from 'react-native';
 import {DrawerButton} from '../components/DrawerButton';
 import {globalStyles} from '../constants/styles';
 import {Ionicons} from "@expo/vector-icons";
 import { COLORS } from '../constants/colors';
-
+import {useSelector} from 'react-redux';
+import {getListOfShopProducts} from '../store/selectors/shop';
+import {NoItems} from '../components/NoItems';
+import { ShopProduct } from "../components/ShopProduct";
 
 const ToCartButton = (props) => (
   <TouchableHighlight {...props}
@@ -16,11 +19,21 @@ const ToCartButton = (props) => (
     </TouchableHighlight>
 )
 
-export const ShopScreen = ({}) => (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>Home Screen</Text>
-  </View>
-)
+export const ShopScreen = ({}) => {
+    const productIds = useSelector(getListOfShopProducts());
+    if (productIds.length === 0) {
+        return (
+            <NoItems>There are no products</NoItems>
+        )
+    }
+    return (
+        <ScrollView >
+            {productIds.map(e => (
+                <ShopProduct id={e} key={e}/>
+            ))}
+        </ScrollView>
+    )  
+}
 
 export const ShopScreenOptions = ({ route, navigation }) => {
   return {

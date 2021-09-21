@@ -3,7 +3,8 @@ import * as c from '../constants';
 
 const initialState = {
     products: {
-        a: new Product('a', 'test', 25, 'Dummy description', 'https://images.jpost.com/image/upload/f_auto,fl_lossy/t_JD_ArticleMainImageFaceDetect/481343')
+        a: new Product('a', 'test', 25, 'Dummy description', 
+        'https://images.jpost.com/image/upload/f_auto,fl_lossy/t_JD_ArticleMainImageFaceDetect/481343')
     }
 };
 
