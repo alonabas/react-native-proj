@@ -1,5 +1,5 @@
 import React from "react";
-import {ScrollView, StyleSheet, Text, TouchableHighlight, View} from 'react-native';
+import {ScrollView, StyleSheet, Text, TouchableHighlight, View, Animated} from 'react-native';
 import {DrawerButton} from '../components/DrawerButton';
 import {globalStyles} from '../constants/styles';
 import {Ionicons} from "@expo/vector-icons";
@@ -10,11 +10,37 @@ import {NoItems} from '../components/NoItems';
 import { ShopProduct } from "../components/ShopProduct";
 
 
-const Count = ({value}) => (
-    <View style={styles.countView}>
-        <Text>{value}</Text>
-    </View>
-)
+const Count = ({value}) => {
+    const [localValue, setLocalValue] = React.useState(value)
+    const jump = React.useRef(new Animated.Value(1)).current;
+
+    React.useEffect(() => {
+        Animated.timing(jump, {
+            toValue: 2,
+            duration: 250,
+            useNativeDriver: false
+          }).start(({ finished }) => {
+            setLocalValue(value);
+        });
+
+    }, [value]);
+    React.useEffect(() => {
+        Animated.timing(jump, {
+            toValue: 1,
+            duration: 250,
+            useNativeDriver: false
+          }).start(({ finished }) => {
+            
+        });
+
+    }, [localValue]);
+
+    return (
+        <Animated.View style={[styles.countView, {transform: [{scale: jump}]}]}>
+            <Text>{localValue}</Text>
+        </Animated.View>
+    )
+}
 
 const ToCartButton = (props) => {
     const count = useSelector(numberOfItemsInCart());
