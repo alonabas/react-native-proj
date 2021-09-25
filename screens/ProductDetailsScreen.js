@@ -5,7 +5,6 @@ import {useDispatch, useSelector} from 'react-redux';
 import {STORE_MODULE_NAME} from '../store/constants';
 import { COLORS } from "../constants/colors";
 import {addProductToCart} from '../store/actions/shop';
-import {OrderItem} from '../model/order';
 
 
 export const ProductDetailsScreen = ({route}) => {
@@ -14,7 +13,7 @@ export const ProductDetailsScreen = ({route}) => {
     const dispatch = useDispatch();
     const onPress = () => {
         const productId = route?.params?.productId;
-        dispatch(addProductToCart(new OrderItem(productId, +itemsToCard)))
+        dispatch(addProductToCart(productId, +itemsToCard))
     }
     return (
         <ScrollView style={styles.container}>
@@ -26,11 +25,11 @@ export const ProductDetailsScreen = ({route}) => {
                 />
             <View style={styles.propertyContainer}>
                 <Text style={styles.attrTitle}>Price:</Text>
-                <Text>{product.price}</Text>
+                <Text style={styles.attrValue}>{product.price}</Text>
             </View>
             <View style={styles.propertyContainer}>
                 <Text style={styles.attrTitle}>Description:</Text>
-                <Text>{product.description}</Text>
+                <Text style={styles.attrValue}>{product.description}</Text>
             </View>
             <View style={{...styles.propertyContainer, ...styles.buttonContainer}}>
                 <TextInput value={itemsToCard ?? '1'} 
@@ -77,7 +76,9 @@ const styles = StyleSheet.create({
         marginRight: 10,
         width: 'auto',
         textAlign: 'center'
-
+    },
+    attrValue: {
+        flex: 1,
     }
 });
 

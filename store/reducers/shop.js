@@ -23,11 +23,26 @@ const initialState = {
         'https://m.media-amazon.com/images/I/614bL2rQtcL._AC_SL1468_.jpg'),
         '10': new Product('10', 'LED Monitor', 147.00, 'Sceptre 20" 1600x900 75Hz Ultra Thin LED Monitor 2x HDMI VGA Built-in Speakers, Machine Black Wide Viewing Angle 170° (Horizontal) / 160° (Vertical)', 
         'https://m.media-amazon.com/images/I/61JceXBE1xS._AC_SL1283_.jpg'),
-    }
+    },
+    cart: {},
+    orders: []
 };
 
 const reducer = (state = initialState, action) => {
     switch(action.type){
+        case c.ADD_ORDER_ITEM: 
+            return {...state, cart: {
+                ...state.cart, 
+                [action.productId]: action.count + (state.cart[action.productId] ?? 0)}}
+        
+        case c.REMOVE_ITEM_FROM_CART:
+            const cartItems = {...state.cart}
+            delete cartItems[action.id];
+            return {...state, cart: cartItems};
+            
+        case c.PLACE_ORDER:
+            const order = {...state.cart, date: Date.now()}
+            return {...state, cart: {}, orders: [...state.orders, order]}
         
         default:
             return state;

@@ -1,6 +1,16 @@
-import {ADD_ORDER_ITEM} from '../constants';
+import {ADD_ORDER_ITEM, REMOVE_ITEM_FROM_CART, PLACE_ORDER} from '../constants';
 
-export const addProductToCart = (orderItem)  => ({
+export const addProductToCart = (productId, count)  => ({
     type: ADD_ORDER_ITEM,
-    orderItem
+    productId,
+    count
 })
+
+export const removeFromCart = (productId) => ({
+    type: REMOVE_ITEM_FROM_CART,
+    id: productId
+})
+
+export const placeOrder = () => ({
+    type: PLACE_ORDER
+});

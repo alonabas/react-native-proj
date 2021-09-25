@@ -1,23 +1,38 @@
 import React from "react";
-import {ScrollView, Text, TouchableHighlight} from 'react-native';
+import {ScrollView, StyleSheet, Text, TouchableHighlight, View} from 'react-native';
 import {DrawerButton} from '../components/DrawerButton';
 import {globalStyles} from '../constants/styles';
 import {Ionicons} from "@expo/vector-icons";
 import { COLORS } from '../constants/colors';
 import {useSelector} from 'react-redux';
-import {getListOfShopProducts} from '../store/selectors/shop';
+import {getListOfShopProducts, numberOfItemsInCart} from '../store/selectors/shop';
 import {NoItems} from '../components/NoItems';
 import { ShopProduct } from "../components/ShopProduct";
 
-const ToCartButton = (props) => (
-  <TouchableHighlight {...props}
-                        activeOpacity={0.9} 
-                        title='Go to cart'
-                        underlayColor={'white'} 
-                        style={globalStyles.menuButtonContainer}>
-        <Ionicons name='cart-outline' size={25} color={COLORS.main}/>
-    </TouchableHighlight>
+
+const Count = ({value}) => (
+    <View style={styles.countView}>
+        <Text>{value}</Text>
+    </View>
 )
+
+const ToCartButton = (props) => {
+    const count = useSelector(numberOfItemsInCart());
+    return (
+        <TouchableHighlight {...props}
+                            activeOpacity={0.9} 
+                            title='Go to cart'
+                            underlayColor={'white'} 
+                            style={globalStyles.menuButtonContainer}>
+            <View>                    
+                <Ionicons name='cart-outline' size={25} color={COLORS.main}/>
+                {count > 0 &&
+                    <Count value={count}/>
+                }
+            </View>
+        </TouchableHighlight>
+    )
+}
 
 export const ShopScreen = ({}) => {
     const productIds = useSelector(getListOfShopProducts());
@@ -47,3 +62,13 @@ export const ShopScreenOptions = ({ route, navigation }) => {
       headerTitle: 'Shop'
   }
 }
+
+
+
+const styles = StyleSheet.create({
+    countView: {
+        bottom: -4,
+        right: -4,
+        position: 'absolute'
+    }
+})

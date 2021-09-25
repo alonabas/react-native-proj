@@ -7,16 +7,18 @@ import { LocalButton } from "./LocalButton";
 import {View, StyleSheet, Text} from 'react-native';
 import React from "react";
 import { COLORS } from "../constants/colors";
+import {addProductToCart} from '../store/actions/shop';
 
 export const ShopProduct =  ({id}) => {
     const product = useSelector(state => state?.[STORE_MODULE_NAME]?.products?.[id]);
     const navigation = useNavigation();
-    
+    const dispatch = useDispatch();
+
     const details = () => {
         navigation.navigate({name: 'productDetails',params: {productId: id, productName: product?.title}})
     }
     const toCart = () => {
-        console.log('To cart')
+        dispatch(addProductToCart(id, 1))
     }
     return (
         <View style={styles.productContainer}>

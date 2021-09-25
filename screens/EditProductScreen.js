@@ -206,8 +206,8 @@ const SaveProductButton = ({...props}) => {
                             title='All my products'
                             underlayColor={'white'} 
                             style={globalStyles.menuButtonContainer}>
-        <Ionicons name='ios-save-outline' size={25} color={COLORS.main}/>
-    </TouchableHighlight>
+            <Ionicons name='ios-save-outline' size={25} color={COLORS.main}/>
+        </TouchableHighlight>
     )
 }
 
