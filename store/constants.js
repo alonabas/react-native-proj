@@ -9,3 +9,12 @@ export const REMOVE_ITEM_FROM_CART = `${STORE_MODULE_NAME}__remove_item_from_car
 export const PLACE_ORDER = `${STORE_MODULE_NAME}__place_an_order`;
 
 export const THIS_USER = 'current';
+
+
+export const PRICE_OF_ITEMS_IN_CART = (state) => {
+    return Object.keys(state?.cart).reduce((sum, element) => {
+        const count = state?.cart?.[element] ?? 1;
+        const price = +state?.products?.[element]?.price;
+        return sum + (count * price)
+    }, 0);
+}

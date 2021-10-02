@@ -11,6 +11,12 @@ export const globalStyles = StyleSheet.create({
         borderRadius: 4,
         marginHorizontal: 10,
         marginVertical: 5
-        
+    },
+    mainContainer: {
+        flex: 1, 
+        alignItems: 'center', 
+        justifyContent: 'flex-start',
+        paddingHorizontal: 10,
+        paddingVertical: 20,
     }
 })

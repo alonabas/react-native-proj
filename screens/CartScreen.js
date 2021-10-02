@@ -1,69 +1,33 @@
 import React from "react";
-import {View, Text, StyleSheet, ScrollView, Dimensions, Animated, Button} from 'react-native';
+import {View, Text, StyleSheet, ScrollView, Animated, Button} from 'react-native';
 import { useDispatch, useSelector } from "react-redux";
 import {sumOfCart, itemsInCart} from '../store/selectors/shop';
-import {Ionicons} from "@expo/vector-icons";
-import {STORE_MODULE_NAME} from '../store/constants';
-import {COLORS} from '../constants/colors';
 import {globalStyles} from '../constants/styles';
-import { TouchableOpacity } from "react-native-gesture-handler";
-import {removeFromCart, placeOrder} from '../store/actions/shop';
+import {placeOrder} from '../store/actions/shop';
+import { useNavigation } from "@react-navigation/core";
+import {OrderItem} from '../components/OrderItem';
+import {Price} from '../components/Price';
 
 const Total = ({}) => {
     const totalSum = useSelector(sumOfCart());
     return (
         <View style={styles.cartTotal}>
             <Text style={styles.paddingOnRight}>Total sum:</Text>
-            <Text>{totalSum}</Text>
+            <Price value={totalSum} highlight={true}/>
         </View>
     )
 }
 
-const PlaceOrder = ({}) => {
+const PlaceOrder = ({setOrderPlaced=() => {}}) => {
     const dispatch = useDispatch();
     const press = () => {
         dispatch(placeOrder());
-        alert('Your order has been placed!');
+        setOrderPlaced(true);
     }
     return (
         <View style={styles.placeOrderButtonContainer}>
             <Button title='Place an order' onPress={press} style={styles.placeOrderButton}/>
         </View>
-    )
-}
-
-const OrderItem = ({item={}}) => {
-    const fadeAnim = React.useRef(new Animated.Value(0)).current;
-
-    const product = useSelector(state => state?.[STORE_MODULE_NAME]?.products?.[item?.id]) ?? {};
-
-    const dispatch = useDispatch();
-    const remove = () => {
-        Animated.timing(fadeAnim, {
-            toValue: Dimensions.get('window').width,
-            duration: 250,
-            useNativeDriver: false
-          }).start(({ finished }) => {
-            dispatch(removeFromCart(item?.id))
-        });
-    }
-    return (
-        <Animated.View style={[styles.orderItemContainer, {right: fadeAnim}]}>
-            <View style={styles.innerCartItemContainer}>
-                <Text style={styles.textStyle}>{item.count}</Text>
-                <Text style={styles.textStyle}>{product.title}</Text>
-            </View>            
-            <View style={[styles.innerCartItemContainer, styles.toEnd]}>
-                <Text style={styles.textStyle}>{product.price}</Text>
-                <TouchableOpacity activeOpacity={0.4} 
-                                  style={styles.removeButton}
-                                  onPress={remove}
-                                  title='Remove from card'
-                                  underlayColor={COLORS.accent} >
-                    <Ionicons name="trash-bin-outline" size={30} color={COLORS.main}/>
-                </TouchableOpacity>
-            </View>
-        </Animated.View>
     )
 }
 
@@ -74,19 +38,49 @@ const OrderItems = ({}) => {
     ))
 }
 
+const OrderPlacedMessage = ({isOrderPlaced}) => {
+    const fadeAnim = React.useRef(new Animated.Value(0)).current;
+    const navigation = useNavigation();
+    React.useEffect(() => {
+        Animated.timing(fadeAnim, {
+            toValue: isOrderPlaced ? 1 : 0,
+            duration: 550,
+            useNativeDriver: false
+          }).start(({ finished }) => {
+            if (isOrderPlaced) navigation.navigate({name: 'orders'})
+        });
+    }, [isOrderPlaced])
+
+    return (
+        <Animated.View style={[styles.orderPlacedView, {opacity: fadeAnim}]}>
+            <Text>Your order has been placed</Text>
+        </Animated.View>
+    )
+}
+
 export const CartScreen = ({}) => {
+    const [isOrderPlaced, setOrderPlaced] = React.useState(false)
+
     const items = useSelector(itemsInCart());
+
+    React.useEffect(() => {
+        if (isOrderPlaced) { 
+            setTimeout(() => setOrderPlaced(false), 2500);
+        }
+    }, [isOrderPlaced]);
+
     if (items?.length === 0) {
         return (
-            <View style={styles.mainContainer}>
+            <View style={globalStyles.mainContainer}>
+                <OrderPlacedMessage isOrderPlaced={isOrderPlaced}/>
                 <Text>The cart is empty</Text>
             </View>
         )
     }
     return (
-        <View style={styles.mainContainer}>
+        <View style={globalStyles.mainContainer}>
             <Total/>
-            <PlaceOrder/>
+            <PlaceOrder setOrderPlaced={setOrderPlaced}/>
             <ScrollView contentContainerStyle={styles.scrollView}>
                 <OrderItems/>
             </ScrollView>
@@ -95,59 +89,29 @@ export const CartScreen = ({}) => {
 };
 
 const styles = StyleSheet.create({
-    mainContainer: { 
-        flex: 1, 
-        alignItems: 'center', 
-        justifyContent: 'flex-start',
-        paddingHorizontal: 10,
-        paddingVertical: 20,
-    },
     cartTotal: {
         // flex: 1,
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        alignItems: 'center'
     },
     paddingOnRight: {
         paddingRight: 10,
-    },
-    orderItemContainer : {
-        // flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        alignSelf: 'flex-start',
-        marginVertical: 10,
-        paddingHorizontal: 5,
-        borderBottomWidth: 1,
-        borderBottomColor: COLORS.secondary,
-    },
-    innerCartItemContainer: {
-        // flex: 1,
-        width: '50%',
-
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
-        alignItems: 'center'
-    },
-    toEnd: {
-        justifyContent: 'flex-end',
-    },
-    textStyle: {
-        paddingHorizontal: 4
     },
     scrollView: {
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
     },
-    removeButton: {
-        marginHorizontal: 10,
-        marginVertical: 4
-    },
+
     placeOrderButtonContainer: {
         marginVertical: 10,
     },
     placeOrderButton: {
         paddingHorizontal: 10
+    },
+    orderPlacedView: {
+        marginVertical: 10,
+
     }
 
 })

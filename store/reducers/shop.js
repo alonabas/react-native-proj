@@ -1,5 +1,6 @@
 import { Product } from '../../model/product';
 import * as c from '../constants';
+import moment from 'moment';
 
 const initialState = {
     products: {
@@ -41,7 +42,7 @@ const reducer = (state = initialState, action) => {
             return {...state, cart: cartItems};
             
         case c.PLACE_ORDER:
-            const order = {...state.cart, date: Date.now()}
+            const order = {items: Object.entries(state.cart).map(([id, count]) => ({id, count})), date: moment().unix(), price: c.PRICE_OF_ITEMS_IN_CART(state)}
             return {...state, cart: {}, orders: [...state.orders, order]}
         
         default:
