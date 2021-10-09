@@ -2,7 +2,7 @@ import React from "react";
 import {ScrollView, StyleSheet} from 'react-native';
 import {DrawerButton} from '../components/DrawerButton';
 import {useSelector} from 'react-redux';
-import {numberOfItemsInCart} from '../store/selectors/shop';
+import {numberOfItemsInCart} from '../store/selectors/cart';
 import {getListOfShopProducts} from '../store/selectors/products';
 import {NoItems} from '../components/NoItems';
 import { ShopProduct } from "../components/ShopProduct";

@@ -5,7 +5,7 @@ import { StyleSheet, Animated, Text, View, Dimensions } from "react-native";
 import { COLORS } from "../constants/colors";
 import { LocalButton } from "./LocalButton";
 import {OrderContext} from '../contexts/OrderContext';
-import {DisplayOrderItem} from './OrderItem';
+import {DisplayOrderItem} from './CartItem';
 
 const LocalAnimatedButton = ({style={}, title='', onPress=() => {}, animatedValue}) => {
     const baseAnimHeight = React.useRef(new Animated.Value(40)).current;

@@ -1,7 +1,7 @@
 import React from "react";
 import {View, StyleSheet, Animated, TouchableHighlight} from 'react-native';
 import {useSelector} from 'react-redux';
-import {numberOfItemsInCart} from '../store/selectors/shop';
+import {numberOfItemsInCart} from '../store/selectors/cart';
 import { RegularTitle } from "../components/Title";
 import { COLORS } from "../constants/colors";
 import { globalStyles } from "../constants/styles";

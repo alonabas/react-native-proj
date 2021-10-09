@@ -4,7 +4,7 @@ import { LocalButton } from "../components/LocalButton";
 import {useDispatch, useSelector} from 'react-redux';
 import {PRODUCTS_MODULE_NAME} from '../store/constants';
 import { COLORS } from "../constants/colors";
-import {addProductToCart} from '../store/actions/shop';
+import {addProductToCart} from '../store/actions/cart';
 import {Price} from '../components/Price';
 import {RegularTitle} from '../components/Title';
 import {ToCartButton} from '../components/ToCartButton';
@@ -15,7 +15,7 @@ export const ProductDetailsScreen = ({route}) => {
     const dispatch = useDispatch();
     const onPress = () => {
         const productId = route?.params?.productId;
-        dispatch(addProductToCart(productId, +itemsToCard))
+        dispatch(addProductToCart(productId, product.title, product.price, +itemsToCard))
     }
     return (
         <ScrollView style={styles.container}>
@@ -35,7 +35,7 @@ export const ProductDetailsScreen = ({route}) => {
             </View>
             <View style={{...styles.propertyContainer, ...styles.buttonContainer}}>
                 <TextInput value={itemsToCard ?? '1'} 
-                           onChange={setItemsToCard} 
+                           onChangeText={setItemsToCard} 
                            style={styles.countToCartInput}
                            keyboardType={'numeric'}/>
                 <LocalButton title={'Add to card'} onPress={onPress}/>

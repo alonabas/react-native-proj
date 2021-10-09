@@ -3,7 +3,7 @@ import {View, Text, ScrollView, StyleSheet, Button} from 'react-native';
 import { useSelector } from "react-redux";
 import {DrawerButton} from '../components/DrawerButton';
 import { globalStyles } from "../constants/styles";
-import {getListOfOrders} from '../store/selectors/shop';
+import {getListOfOrders} from '../store/selectors/cart';
 import { RegularTitle } from "../components/Title";
 import { COLORS } from "../constants/colors";
 import {OrderDetails} from '../components/OrderDetails';

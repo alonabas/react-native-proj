@@ -1,11 +1,11 @@
 import React from "react";
 import {View, Text, StyleSheet, ScrollView, Animated, Button} from 'react-native';
 import { useDispatch, useSelector } from "react-redux";
-import {sumOfCart, itemsInCart} from '../store/selectors/shop';
+import {sumOfCart, itemsInCart} from '../store/selectors/cart';
 import {globalStyles} from '../constants/styles';
-import {placeOrder} from '../store/actions/shop';
+import {placeOrder} from '../store/actions/cart';
 import { useNavigation } from "@react-navigation/core";
-import {OrderItem} from '../components/OrderItem';
+import {CartItem} from '../components/CartItem';
 import {Price} from '../components/Price';
 import {NoItems} from '../components/NoItems';
 import {LocalButton} from '../components/LocalButton';
@@ -38,7 +38,7 @@ const PlaceOrder = ({setOrderPlaced=() => {}}) => {
 const OrderItems = ({}) => {
     const items = useSelector(itemsInCart());
     return items.map(item => (
-        <OrderItem key={item.id} item={item}/>
+        <CartItem key={item} id={item}/>
     ))
 }
 

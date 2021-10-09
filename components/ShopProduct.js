@@ -7,7 +7,7 @@ import { LocalButton } from "./LocalButton";
 import {View, StyleSheet, Text, Platform, TouchableNativeFeedback, TouchableOpacity} from 'react-native';
 import React from "react";
 import { COLORS } from "../constants/colors";
-import {addProductToCart} from '../store/actions/shop';
+import {addProductToCart} from '../store/actions/cart';
 import {Price} from './Price';
 
 export const ShopProduct =  ({id}) => {
@@ -19,7 +19,8 @@ export const ShopProduct =  ({id}) => {
         navigation.navigate({name: 'productDetails',params: {productId: id, productName: product?.title}})
     }
     const toCart = () => {
-        dispatch(addProductToCart(id, 1))
+        //productId, productTitle, price, count
+        dispatch(addProductToCart(id, product?.title, product?.price, 1))
     }
     const TouchableCmp = (Platform.OS === 'android' && Platform.Version >=21) ? TouchableNativeFeedback  : TouchableOpacity;
 
