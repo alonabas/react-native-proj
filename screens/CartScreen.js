@@ -7,12 +7,15 @@ import {placeOrder} from '../store/actions/shop';
 import { useNavigation } from "@react-navigation/core";
 import {OrderItem} from '../components/OrderItem';
 import {Price} from '../components/Price';
+import {NoItems} from '../components/NoItems';
+import {LocalButton} from '../components/LocalButton';
+import {RegularTitle} from '../components/Title';
 
 const Total = ({}) => {
     const totalSum = useSelector(sumOfCart());
     return (
         <View style={styles.cartTotal}>
-            <Text style={styles.paddingOnRight}>Total sum:</Text>
+            <RegularTitle style={styles.paddingOnRight}>Total sum:</RegularTitle>
             <Price value={totalSum} highlight={true}/>
         </View>
     )
@@ -20,13 +23,14 @@ const Total = ({}) => {
 
 const PlaceOrder = ({setOrderPlaced=() => {}}) => {
     const dispatch = useDispatch();
+    const price = useSelector(sumOfCart());
     const press = () => {
-        dispatch(placeOrder());
+        dispatch(placeOrder(price));
         setOrderPlaced(true);
     }
     return (
         <View style={styles.placeOrderButtonContainer}>
-            <Button title='Place an order' onPress={press} style={styles.placeOrderButton}/>
+            <LocalButton title={'Place an order'} style={styles.placeOrderButton} onPress={press}/>
         </View>
     )
 }
@@ -73,7 +77,7 @@ export const CartScreen = ({}) => {
         return (
             <View style={globalStyles.mainContainer}>
                 <OrderPlacedMessage isOrderPlaced={isOrderPlaced}/>
-                <Text>The cart is empty</Text>
+                <NoItems>The cart is empty</NoItems>
             </View>
         )
     }

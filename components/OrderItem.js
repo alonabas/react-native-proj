@@ -2,20 +2,21 @@ import React from "react";
 import {View, Text, StyleSheet, Dimensions, Animated} from 'react-native';
 import { useDispatch, useSelector } from "react-redux";
 import {Ionicons} from "@expo/vector-icons";
-import {STORE_MODULE_NAME} from '../store/constants';
+import {PRODUCTS_MODULE_NAME} from '../store/constants';
 import {COLORS} from '../constants/colors';
 import { TouchableOpacity } from "react-native-gesture-handler";
 import {removeFromCart, placeOrder} from '../store/actions/shop';
 import {Price} from './Price';
+import {RegularTitle, BoldTitle} from './Title';
 
 export const DisplayOrderItem = ({item={}, children}) => {
-    const product = useSelector(state => state?.[STORE_MODULE_NAME]?.products?.[item?.id]) ?? {};
+    const product = useSelector(state => state?.[PRODUCTS_MODULE_NAME]?.products?.[item?.id]) ?? {};
 
     return (
         <View style={styles.orderItemContainer}>
             <View style={styles.innerCartItemContainer}>
-                <Text style={styles.textStyle}>{item.count}</Text>
-                <Text style={styles.textStyle}>{product.title}</Text>
+                <BoldTitle style={styles.textStyle}>{item.count}</BoldTitle>
+                <RegularTitle style={styles.textStyle}>{product.title}</RegularTitle>
             </View>            
             <View style={[styles.innerCartItemContainer, styles.toEnd]}>
                 <Price value={product.price} highlight={false} style={styles.textStyle}/>

@@ -2,9 +2,7 @@
 
 import {STORE_MODULE_NAME, PRICE_OF_ITEMS_IN_CART} from '../constants';
 
-export const getListOfShopProducts = () => (state) => Object.keys(state?.[STORE_MODULE_NAME]?.products ?? {})
-
-export const sumOfCart = () => (state) => PRICE_OF_ITEMS_IN_CART(state?.[STORE_MODULE_NAME]);
+export const sumOfCart = () => (state) => PRICE_OF_ITEMS_IN_CART(state);
 
 export const itemsInCart = () => (state) => {
     return Object.entries(state?.[STORE_MODULE_NAME]?.cart).map(([key,val]) => ({id: key, count: val}));

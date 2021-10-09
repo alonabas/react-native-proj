@@ -1,6 +1,6 @@
 
 import { useDispatch, useSelector } from "react-redux";
-import {MY_PRODUCTS_MODULE_NAME} from '../store/constants'
+import {PRODUCTS_MODULE_NAME} from '../store/constants'
 import { useNavigation } from "@react-navigation/core";
 import { LocalButton } from "./LocalButton";
 import {removeProduct} from '../store/actions/products';
@@ -8,11 +8,12 @@ import {View, StyleSheet, Text, Animated, Dimensions} from 'react-native';
 import {DisplayProduct} from './DisplayProduct';
 import { COLORS } from '../constants/colors';
 import React from "react";
+import { Price } from "./Price";
 
 export const MyProduct =  ({id}) => {
     const fadeAnim = React.useRef(new Animated.Value(0)).current;
 
-    const product = useSelector(state => state?.[MY_PRODUCTS_MODULE_NAME]?.products?.[id]);
+    const product = useSelector(state => state?.[PRODUCTS_MODULE_NAME]?.products?.[id]);
     const navigation = useNavigation();
     const dispatch = useDispatch();
     
@@ -34,7 +35,7 @@ export const MyProduct =  ({id}) => {
             <DisplayProduct product={product}/>
             <View style={styles.buttonsContainer}>
                 <LocalButton title={'Edit'} style={styles.button} onPress={edit}/>
-                <Text>{product?.price}</Text>
+                <Price value={product?.price} highlight={true}/>
                 <LocalButton title={'Delete'} style={styles.button} onPress={remove}/>
             </View>
         </Animated.View>

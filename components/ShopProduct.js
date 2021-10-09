@@ -1,16 +1,17 @@
 
 import { useDispatch, useSelector } from "react-redux";
-import {STORE_MODULE_NAME} from '../store/constants'
+import {PRODUCTS_MODULE_NAME} from '../store/constants'
 import { useNavigation } from "@react-navigation/core";
 import { DisplayProduct } from "./DisplayProduct";
 import { LocalButton } from "./LocalButton";
-import {View, StyleSheet, Text} from 'react-native';
+import {View, StyleSheet, Text, Platform, TouchableNativeFeedback, TouchableOpacity} from 'react-native';
 import React from "react";
 import { COLORS } from "../constants/colors";
 import {addProductToCart} from '../store/actions/shop';
+import {Price} from './Price';
 
 export const ShopProduct =  ({id}) => {
-    const product = useSelector(state => state?.[STORE_MODULE_NAME]?.products?.[id]);
+    const product = useSelector(state => state?.[PRODUCTS_MODULE_NAME]?.products?.[id]);
     const navigation = useNavigation();
     const dispatch = useDispatch();
 
@@ -20,14 +21,20 @@ export const ShopProduct =  ({id}) => {
     const toCart = () => {
         dispatch(addProductToCart(id, 1))
     }
+    const TouchableCmp = (Platform.OS === 'android' && Platform.Version >=21) ? TouchableNativeFeedback  : TouchableOpacity;
+
     return (
-        <View style={styles.productContainer}>
-            <DisplayProduct product={product}/>
-            <View style={styles.buttonsContainer}>
-                <LocalButton title={'Details'} style={styles.button} onPress={details}/>
-                <Text>{product?.price}</Text>
-                <LocalButton title={'Cart'} style={styles.button} onPress={toCart}/>
+        <View style={styles.productContainer} >
+            <TouchableCmp onPress={details}>
+                <View>
+                    <DisplayProduct product={product}/>
+                    <View style={styles.buttonsContainer}>
+                        <LocalButton title={'Details'} style={styles.button} onPress={details}/>
+                        <Price value={product?.price} highlight={true}/>
+                        <LocalButton title={'Cart'} style={styles.button} onPress={toCart}/>
+                    </View>
             </View>
+            </TouchableCmp>
         </View>
 
     )

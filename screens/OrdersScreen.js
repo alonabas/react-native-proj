@@ -4,11 +4,13 @@ import { useSelector } from "react-redux";
 import {DrawerButton} from '../components/DrawerButton';
 import { globalStyles } from "../constants/styles";
 import {getListOfOrders} from '../store/selectors/shop';
-import { LocalButton } from "../components/LocalButton";
+import { RegularTitle } from "../components/Title";
 import { COLORS } from "../constants/colors";
 import {OrderDetails} from '../components/OrderDetails';
 import {OrderContext} from '../contexts/OrderContext';
 import moment from 'moment';
+import { NoItems } from "../components/NoItems";
+import { Price } from "../components/Price";
 
 export const OrdersScreenOptions = ({navigation}) => ({
     headerLeft: (props) => (
@@ -22,8 +24,9 @@ const Order = ({order}) => {
         <OrderContext.Provider value={{order}}>
             <View style={styles.orderContainer}>
                 <View style={styles.row}>
-                    <Text>{order.price}</Text>
-                    <Text>{moment.unix(order.date).format("MM/DD/YYYY HH:mm")}</Text>
+                    <RegularTitle>Order ID {order.date}</RegularTitle>
+                    <Price value={order?.price} highlight={true}/>
+                    <RegularTitle>{moment.unix(order.date).format("MM/DD/YYYY HH:mm")}</RegularTitle>
                 </View>
                 <OrderDetails/>
             </View>
@@ -33,7 +36,12 @@ const Order = ({order}) => {
 
 const Orders = ({}) => {
     const orders = useSelector(getListOfOrders());
-    return orders.map(order => <Order key={order?.date} order={order}/>)
+    if (orders.length > 0) {
+        return orders.map(order => <Order key={order?.date} order={order}/>)
+    }
+    return (
+        <NoItems>You haven't placed any order yet</NoItems>
+    )
 }
 
 export const OrdersScreen = ({}) => {
@@ -58,7 +66,8 @@ const styles = StyleSheet.create({
     },
     row: {
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        paddingBottom: 10
     },
     
     localMainContainer: {

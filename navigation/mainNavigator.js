@@ -22,9 +22,15 @@ const hideHeaderOptions = {
 const basicNavigationOptions = {
   headerTintColor: COLORS.main,
   headerTitleStyle: {
-    color: 'black'
+    color: 'black',
+    fontFamily: 'author-r',
+    fontSize: 26
   },
-  headerTitleAlign: 'center'
+  headerTitleAlign: 'center',
+  headerBackTitleStyle: {
+    fontFamily: 'author-r',
+    fontSize: 18
+  }
 }
 
 const ShopStackNavigator = ({}) => {
@@ -68,8 +74,10 @@ const OrdersStackNavigator = ({}) => (
 
 export const MainNavigator = ({}) => {
     return (
-        <Drawer.Navigator>
-          <Drawer.Screen name="shopNav" 
+        <Drawer.Navigator screenOptions={{
+          drawerLabelStyle: {fontFamily: 'author-r', fontSize: 20}
+        }}>
+          <Drawer.Screen name="shopNav"
                          options={{title:'Shop', ...hideHeaderOptions}} 
                          component={ShopStackNavigator} />
           <Drawer.Screen name="ordersNav" 

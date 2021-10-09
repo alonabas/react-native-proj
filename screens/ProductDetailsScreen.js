@@ -2,14 +2,16 @@ import React from "react";
 import {View, Text, ScrollView, StyleSheet, Image, TextInput} from 'react-native';
 import { LocalButton } from "../components/LocalButton";
 import {useDispatch, useSelector} from 'react-redux';
-import {STORE_MODULE_NAME} from '../store/constants';
+import {PRODUCTS_MODULE_NAME} from '../store/constants';
 import { COLORS } from "../constants/colors";
 import {addProductToCart} from '../store/actions/shop';
-
+import {Price} from '../components/Price';
+import {RegularTitle} from '../components/Title';
+import {ToCartButton} from '../components/ToCartButton';
 
 export const ProductDetailsScreen = ({route}) => {
     const [itemsToCard, setItemsToCard] = React.useState('1');
-    const product = useSelector(state => state?.[STORE_MODULE_NAME]?.products?.[route?.params?.productId] ?? {});
+    const product = useSelector(state => state?.[PRODUCTS_MODULE_NAME]?.products?.[route?.params?.productId] ?? {});
     const dispatch = useDispatch();
     const onPress = () => {
         const productId = route?.params?.productId;
@@ -24,12 +26,12 @@ export const ProductDetailsScreen = ({route}) => {
                     }}
                 />
             <View style={styles.propertyContainer}>
-                <Text style={styles.attrTitle}>Price:</Text>
-                <Text style={styles.attrValue}>{product.price}</Text>
+                <RegularTitle style={styles.attrTitle}>Price:</RegularTitle>
+                <Price value={product.price} style={styles.attrValue}/>
             </View>
             <View style={styles.propertyContainer}>
-                <Text style={styles.attrTitle}>Description:</Text>
-                <Text style={styles.attrValue}>{product.description}</Text>
+                <RegularTitle style={styles.attrTitle}>Description:</RegularTitle>
+                <RegularTitle style={styles.attrValue}>{product.description}</RegularTitle>
             </View>
             <View style={{...styles.propertyContainer, ...styles.buttonContainer}}>
                 <TextInput value={itemsToCard ?? '1'} 
@@ -54,14 +56,14 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         flexDirection: 'row',
         flex: 1,
-        alignItems: 'flex-start',
+        alignItems: 'center',
         justifyContent: 'flex-start'
     },
     attrTitle: {
         paddingRight: 10
     },
     buttonContainer: {
-        alignSelf: 'center',
+        alignSelf: 'flex-start',
         flex: 1,
         justifyContent: 'space-around',
         alignItems: 'center'
@@ -82,10 +84,14 @@ const styles = StyleSheet.create({
     }
 });
 
-export const ProductDetailsOptions = ({ route }) => {
+export const ProductDetailsOptions = ({ route, navigation }) => {
     return {
         presentation: 'modal',
         headerTitle: route?.params?.productName ?? 'Unknown product',
+        headerRight: (props) => (
+            <ToCartButton {...props} 
+                          onPress={() => navigation.navigate({name: 'cart'})} />
+        ),
   
   }
 }

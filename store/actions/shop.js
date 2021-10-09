@@ -11,6 +11,7 @@ export const removeFromCart = (productId) => ({
     id: productId
 })
 
-export const placeOrder = () => ({
-    type: PLACE_ORDER
+export const placeOrder = (price) => ({
+    type: PLACE_ORDER,
+    price
 });

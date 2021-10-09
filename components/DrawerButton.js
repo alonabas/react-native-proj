@@ -8,7 +8,7 @@ export const DrawerButton = (props) => (
     <TouchableHighlight {...props}
                         activeOpacity={0.9} 
                         title='Open menu'
-                        underlayColor={'white'} 
+                        underlayColor={COLORS.accent} 
                         style={globalStyles.menuButtonContainer}>
         <Ionicons name='menu-outline' size={30} color={COLORS.main}/>
     </TouchableHighlight>

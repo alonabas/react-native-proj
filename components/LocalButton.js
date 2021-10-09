@@ -1,8 +1,10 @@
 import React from 'react';
-import { StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { StyleSheet, TouchableOpacity, Text, Platform, TouchableNativeFeedback } from 'react-native';
 import { COLORS } from '../constants/colors';
 
 export const LocalButton = ({title='', style={}, textStyle={}, onPress=() => {}}) => {
+    const TouchableCmp = (Platform.OS === 'android' && Platform.Version >=21) ? TouchableNativeFeedback  : TouchableOpacity;
+
     return (
         <TouchableOpacity activeOpacity={0.85} 
                           onPress={onPress}
@@ -31,6 +33,8 @@ const styles = StyleSheet.create({
         overflow: 'hidden'
     },
     text: {
+        fontFamily: 'author-r',
+        fontSize: 18,
         color: COLORS.ui01
     }
 });

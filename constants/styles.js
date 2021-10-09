@@ -7,10 +7,10 @@ export const globalStyles = StyleSheet.create({
         justifyContent: 'center'
     },
     menuButtonContainer: {
-        padding: 10,
+        padding: 5,
         borderRadius: 4,
         marginHorizontal: 10,
-        marginVertical: 5
+        // marginVertical: 5
     },
     mainContainer: {
         flex: 1, 

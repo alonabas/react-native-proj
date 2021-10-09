@@ -5,7 +5,7 @@ import { COLORS } from '../constants/colors';
 import {DrawerButton} from '../components/DrawerButton';
 import {globalStyles} from '../constants/styles';
 import { useSelector } from "react-redux";
-import {getListOfProducts} from '../store/selectors/myProducts';
+import {getListOfMyProducts} from '../store/selectors/products';
 import {NoItems} from '../components/NoItems';
 import { MyProduct } from "../components/MyProduct";
 
@@ -20,7 +20,7 @@ const AddProductButton = (props) => (
 )
 
 export const ProductsScreen = ({navigation}) => {
-    const productIds = useSelector(getListOfProducts());
+    const productIds = useSelector(getListOfMyProducts());
     if (productIds.length === 0) {
         return (
             <NoItems>You don't have any products</NoItems>

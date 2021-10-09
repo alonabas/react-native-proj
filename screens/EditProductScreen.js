@@ -4,7 +4,7 @@ import {Ionicons} from "@expo/vector-icons";
 import { COLORS } from '../constants/colors';
 import {globalStyles} from '../constants/styles';
 import { useDispatch, useSelector } from "react-redux";
-import {MY_PRODUCTS_MODULE_NAME} from '../store/constants';
+import {PRODUCTS_MODULE_NAME} from '../store/constants';
 import { Product } from "../model/product";
 import {saveProduct} from '../store/actions/products';
 import { useNavigation, useRoute } from "@react-navigation/core";
@@ -22,7 +22,7 @@ const CreateProductContext = React.createContext({
 });
 
 const ProductState = ({productId}) => {
-    const product = useSelector(state => state?.[MY_PRODUCTS_MODULE_NAME]?.products?.[productId] ?? {});
+    const product = useSelector(state => state?.[PRODUCTS_MODULE_NAME]?.products?.[productId] ?? {});
     const [title, setTitle] = React.useState(product.title);
     const [price, setPrice] = React.useState(product.price);
     const [description, setDescription] = React.useState(product.description);
@@ -198,15 +198,16 @@ const SaveProductButton = ({...props}) => {
         navigation.navigate({name: 'listProducts'})
     }, [route.params]);
 
+    const isDisabled = route?.params?.isDisabled ?? true
     return (
         <TouchableHighlight {...props}
-                            disabled={route?.params?.isDisabled ?? true}
+                            disabled={isDisabled}
                             activeOpacity={0.9} 
                             onPress={press}
                             title='All my products'
-                            underlayColor={'white'} 
+                            underlayColor={COLORS.accent} 
                             style={globalStyles.menuButtonContainer}>
-            <Ionicons name='ios-save-outline' size={25} color={COLORS.main}/>
+            <Ionicons name='ios-save-outline' size={25} color={isDisabled ? COLORS.accent : COLORS.main}/>
         </TouchableHighlight>
     )
 }

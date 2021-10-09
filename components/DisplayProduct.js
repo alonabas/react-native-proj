@@ -1,7 +1,7 @@
 import React from "react";
 import {View, StyleSheet, Text, ImageBackground} from 'react-native';
 import { COLORS } from "../constants/colors";
-
+import {BoldTitle} from './Title';
     
 export const DisplayProduct = ({product}) => {
     return (
@@ -10,7 +10,7 @@ export const DisplayProduct = ({product}) => {
                              style={styles.image} 
                              resizeMode={'cover'}>
                 <View style={styles.textContainer}>
-                    <Text style={styles.text} numberOfLines={1}>{product.title}</Text>
+                    <BoldTitle style={styles.text} numberOfLines={1}>{product.title}</BoldTitle>
                 </View>
             </ImageBackground>
         </View>
@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
         width: '100%',
         justifyContent:'flex-start',
         alignItems: 'center',
-        minHeight: 100,
+        minHeight: 150,
     },
     textContainer: {
         backgroundColor: 'rgba(0, 0, 0, 0.5)',        
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     },
     text: {
         color: COLORS.ui01,
-        fontSize: 20,
+        fontSize: 24,
     },
     imageContainer: {
         flex: 1,
