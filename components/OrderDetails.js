@@ -2,10 +2,9 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/core";
 import { StyleSheet, Animated, Text, View, Dimensions } from "react-native";
-import { COLORS } from "../constants/colors";
 import { LocalButton } from "./LocalButton";
 import {OrderContext} from '../contexts/OrderContext';
-import {DisplayOrderItem} from './CartItem';
+import {DisplayOrderItem} from './DisplayOrderItem';
 
 const LocalAnimatedButton = ({style={}, title='', onPress=() => {}, animatedValue}) => {
     const baseAnimHeight = React.useRef(new Animated.Value(40)).current;
@@ -32,11 +31,10 @@ const LocalAnimatedButton = ({style={}, title='', onPress=() => {}, animatedValu
 
 const OrderItems = ({}) => {
     const {order} = React.useContext(OrderContext);
-    
     return (
         <View>
             {(order?.items ?? []).map(item => (
-                <DisplayOrderItem item={item}/>
+                <DisplayOrderItem item={item} key={item?.id}/>
             ))}
         </View>
     )

@@ -4,8 +4,7 @@ import {Price} from './Price';
 import {RegularTitle, BoldTitle} from './Title';
 import { COLORS } from "../constants/colors";
 
-export const DisplayOrderItem = ({item={}, children=''}) => {
-    console.log(item)
+export const DisplayOrderItem = ({item={}, children}) => {
     return (
         <View style={styles.orderItemContainer}>
             <View style={styles.innerCartItemContainer}>
@@ -14,7 +13,7 @@ export const DisplayOrderItem = ({item={}, children=''}) => {
             </View>            
             <View style={[styles.innerCartItemContainer, styles.toEnd]}>
                 <Price value={item?.price} highlight={false} style={styles.textStyle}/>
-                {children}
+                {children && children}
             </View>
         </View>
     )

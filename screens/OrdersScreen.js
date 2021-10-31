@@ -3,7 +3,7 @@ import {View, Text, ScrollView, StyleSheet, Button} from 'react-native';
 import { useSelector } from "react-redux";
 import {DrawerButton} from '../components/DrawerButton';
 import { globalStyles } from "../constants/styles";
-import {getListOfOrders} from '../store/selectors/cart';
+import {getSortedListOfOrders} from '../store/selectors/cart';
 import { RegularTitle } from "../components/Title";
 import { COLORS } from "../constants/colors";
 import {OrderDetails} from '../components/OrderDetails';
@@ -35,7 +35,7 @@ const Order = ({order}) => {
 }
 
 const Orders = ({}) => {
-    const orders = useSelector(getListOfOrders());
+    const orders = useSelector(getSortedListOfOrders());
     if (orders.length > 0) {
         return orders.map(order => <Order key={order?.date} order={order}/>)
     }

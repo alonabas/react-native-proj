@@ -34,7 +34,7 @@ const reducer = (state = initialState, action) => {
             return {...state, cart: cartItems, totalPrice: newTotalPrice};
             
         case c.PLACE_ORDER:
-            const order = {items: Object.entries(state.cart).map(([id, count]) => ({id, count})), date: moment().unix(), price: action.price}
+            const order = {items: Object.entries(state.cart).map(([id, data]) => ({id, ...data})), date: moment().unix(), price: action.price}
             return {...state, cart: {}, orders: [...state.orders, order]}
         
         default:

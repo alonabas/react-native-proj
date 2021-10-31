@@ -1,5 +1,5 @@
 import React from "react";
-import {View, StyleSheet, Animated, TouchableHighlight} from 'react-native';
+import {View, StyleSheet, Animated, TouchableHighlight, Platform} from 'react-native';
 import {useSelector} from 'react-redux';
 import {numberOfItemsInCart} from '../store/selectors/cart';
 import { RegularTitle } from "../components/Title";
@@ -48,7 +48,7 @@ export const ToCartButton = (props) => {
                             underlayColor={COLORS.accent} 
                             style={globalStyles.menuButtonContainer}>
             <View>                    
-                <Ionicons name='cart-outline' size={25} color={COLORS.main}/>
+                <Ionicons name={Platform.OS === 'android' ? 'md-cart': 'ios-cart'} size={25} color={COLORS.main}/>
                 {count > 0 &&
                     <Count value={count}/>
                 }
