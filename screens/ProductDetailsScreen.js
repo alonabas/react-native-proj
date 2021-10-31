@@ -1,13 +1,13 @@
 import React from "react";
-import {View, Text, ScrollView, StyleSheet, Image, TextInput} from 'react-native';
+import { Image, ScrollView, StyleSheet, TextInput, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import { LocalButton } from "../components/LocalButton";
-import {useDispatch, useSelector} from 'react-redux';
-import {PRODUCTS_MODULE_NAME} from '../store/constants';
+import { Price } from '../components/Price';
+import { RegularTitle } from '../components/Title';
+import { ToCartButton } from '../components/ToCartButton';
 import { COLORS } from "../constants/colors";
-import {addProductToCart} from '../store/actions/cart';
-import {Price} from '../components/Price';
-import {RegularTitle} from '../components/Title';
-import {ToCartButton} from '../components/ToCartButton';
+import { addProductToCart } from '../store/actions/cart';
+import { PRODUCTS_MODULE_NAME } from '../store/constants';
 
 export const ProductDetailsScreen = ({route}) => {
     const [itemsToCard, setItemsToCard] = React.useState('1');

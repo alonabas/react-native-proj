@@ -1,12 +1,11 @@
 import React from "react";
-import {ScrollView, StyleSheet} from 'react-native';
-import {DrawerButton} from '../components/DrawerButton';
-import {useSelector} from 'react-redux';
-import {numberOfItemsInCart} from '../store/selectors/cart';
-import {getListOfShopProducts} from '../store/selectors/products';
-import {NoItems} from '../components/NoItems';
+import { ScrollView } from 'react-native';
+import { useSelector } from 'react-redux';
+import { DrawerButton } from '../components/DrawerButton';
+import { NoItems } from '../components/NoItems';
 import { ShopProduct } from "../components/ShopProduct";
-import {ToCartButton} from '../components/ToCartButton';
+import { ToCartButton } from '../components/ToCartButton';
+import { getListOfShopProducts } from '../store/selectors/products';
 
 
 export const ShopScreen = ({}) => {

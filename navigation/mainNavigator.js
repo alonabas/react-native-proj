@@ -1,17 +1,16 @@
 
-import { createStackNavigator } from '@react-navigation/stack';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import {ShopScreen, ShopScreenOptions} from '../screens/ShopScreen';
-import {OrdersScreen, OrdersScreenOptions} from '../screens/OrdersScreen';
-import {ProductsScreen, ProductsScreenOptions} from '../screens/ProductsScreen';
-import React from "react";
-import {CartScreen} from '../screens/CartScreen';
-import {ProductDetailsScreen, ProductDetailsOptions} from '../screens/ProductDetailsScreen';
-import {EditProductScreen, EditProductOptions} from '../screens/EditProductScreen';
-import {COLORS} from '../constants/colors';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createStackNavigator } from '@react-navigation/stack';
+import React from "react";
 import { Platform } from 'react-native';
+import { COLORS } from '../constants/colors';
+import { CartScreen } from '../screens/CartScreen';
+import { EditProductOptions, EditProductScreen } from '../screens/EditProductScreen';
+import { OrdersScreen, OrdersScreenOptions } from '../screens/OrdersScreen';
+import { ProductDetailsOptions, ProductDetailsScreen } from '../screens/ProductDetailsScreen';
+import { ProductsScreen, ProductsScreenOptions } from '../screens/ProductsScreen';
+import { ShopScreen, ShopScreenOptions } from '../screens/ShopScreen';
 
 
 const Stack = createStackNavigator();

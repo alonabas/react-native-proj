@@ -1,13 +1,13 @@
-import React from "react";
-import {View, Text, StyleSheet, ScrollView, TextInput, Image, TouchableHighlight} from 'react-native';
-import {Ionicons} from "@expo/vector-icons";
-import { COLORS } from '../constants/colors';
-import {globalStyles} from '../constants/styles';
-import { useDispatch, useSelector } from "react-redux";
-import {PRODUCTS_MODULE_NAME} from '../store/constants';
-import { Product } from "../model/product";
-import {saveProduct} from '../store/actions/products';
+import { Ionicons } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/core";
+import React from "react";
+import { Image, ScrollView, StyleSheet, Text, TextInput, TouchableHighlight, View } from 'react-native';
+import { useDispatch, useSelector } from "react-redux";
+import { COLORS } from '../constants/colors';
+import { globalStyles } from '../constants/styles';
+import { Product } from "../model/product";
+import { saveProduct } from '../store/actions/products';
+import { PRODUCTS_MODULE_NAME } from '../store/constants';
 
 
 const CreateProductContext = React.createContext({

@@ -1,6 +1,5 @@
-import * as c from '../constants';
-import moment from 'moment';
 import { OrderItem } from '../../model/order';
+import * as c from '../constants';
 
 const initialState = {
     cart: {},

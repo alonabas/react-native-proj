@@ -1,6 +1,6 @@
 
 
-import {CART_MODULE_NAME, PRICE_OF_ITEMS_IN_CART} from '../constants';
+import { CART_MODULE_NAME } from '../constants';
 
 export const sumOfCart = () => (state) => state?.[CART_MODULE_NAME]?.totalPrice;
 

@@ -1,13 +1,13 @@
+import { Ionicons } from "@expo/vector-icons";
 import React from "react";
-import {View, Text, TouchableHighlight, ScrollView} from 'react-native';
-import {Ionicons} from "@expo/vector-icons";
-import { COLORS } from '../constants/colors';
-import {DrawerButton} from '../components/DrawerButton';
-import {globalStyles} from '../constants/styles';
+import { ScrollView, TouchableHighlight } from 'react-native';
 import { useSelector } from "react-redux";
-import {getListOfMyProducts} from '../store/selectors/products';
-import {NoItems} from '../components/NoItems';
+import { DrawerButton } from '../components/DrawerButton';
 import { MyProduct } from "../components/MyProduct";
+import { NoItems } from '../components/NoItems';
+import { COLORS } from '../constants/colors';
+import { globalStyles } from '../constants/styles';
+import { getListOfMyProducts } from '../store/selectors/products';
 
 const AddProductButton = (props) => (
     <TouchableHighlight {...props}

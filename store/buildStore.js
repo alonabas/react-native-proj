@@ -1,10 +1,10 @@
-import mainReducer from "./reducers/main";
-import productsReducer from "./reducers/products";
+import { combineReducers, createStore } from 'redux';
+import { CART_MODULE_NAME, ORDERS_MODULE_NAME, PRODUCTS_MODULE_NAME, REDUX_MAIN_MODULE_NAME } from './constants';
 import cartReducer from "./reducers/cart";
+import mainReducer from "./reducers/main";
 import ordersReducer from "./reducers/orders";
+import productsReducer from "./reducers/products";
 
-import {combineReducers, createStore} from 'redux';
-import {REDUX_MAIN_MODULE_NAME, PRODUCTS_MODULE_NAME, CART_MODULE_NAME, ORDERS_MODULE_NAME} from './constants';
 
 const allReducers = combineReducers({
     [REDUX_MAIN_MODULE_NAME]: mainReducer,

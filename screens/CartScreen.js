@@ -1,15 +1,15 @@
-import React from "react";
-import {View, Text, StyleSheet, ScrollView, Animated, Button} from 'react-native';
-import { useDispatch, useSelector } from "react-redux";
-import {sumOfCart, itemsInCart, allCartItems} from '../store/selectors/cart';
-import {globalStyles} from '../constants/styles';
-import {placeOrder} from '../store/actions/cart';
 import { useNavigation } from "@react-navigation/core";
-import {CartItem} from '../components/CartItem';
-import {Price} from '../components/Price';
-import {NoItems} from '../components/NoItems';
-import {LocalButton} from '../components/LocalButton';
-import {RegularTitle} from '../components/Title';
+import React from "react";
+import { Animated, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useDispatch, useSelector } from "react-redux";
+import { CartItem } from '../components/CartItem';
+import { LocalButton } from '../components/LocalButton';
+import { NoItems } from '../components/NoItems';
+import { Price } from '../components/Price';
+import { RegularTitle } from '../components/Title';
+import { globalStyles } from '../constants/styles';
+import { placeOrder } from '../store/actions/cart';
+import { allCartItems, itemsInCart, sumOfCart } from '../store/selectors/cart';
 
 const Total = ({}) => {
     const totalSum = useSelector(sumOfCart());

@@ -1,16 +1,16 @@
+import moment from 'moment';
 import React from "react";
-import {View, Text, ScrollView, StyleSheet, Button} from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { useSelector } from "react-redux";
-import {DrawerButton} from '../components/DrawerButton';
-import { globalStyles } from "../constants/styles";
-import {getSortedListOfOrders} from '../store/selectors/orders';
+import { DrawerButton } from '../components/DrawerButton';
+import { NoItems } from "../components/NoItems";
+import { OrderDetails } from '../components/OrderDetails';
+import { Price } from "../components/Price";
 import { RegularTitle } from "../components/Title";
 import { COLORS } from "../constants/colors";
-import {OrderDetails} from '../components/OrderDetails';
-import {OrderContext} from '../contexts/OrderContext';
-import moment from 'moment';
-import { NoItems } from "../components/NoItems";
-import { Price } from "../components/Price";
+import { globalStyles } from "../constants/styles";
+import { OrderContext } from '../contexts/OrderContext';
+import { getSortedListOfOrders } from '../store/selectors/orders';
 
 export const OrdersScreenOptions = ({navigation}) => ({
     headerLeft: (props) => (

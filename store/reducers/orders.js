@@ -1,6 +1,6 @@
-import * as c from '../constants';
 import moment from 'moment';
 import { Order } from '../../model/order';
+import * as c from '../constants';
 
 const initialState = {
     orders: []

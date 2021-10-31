@@ -1,14 +1,15 @@
 
-import { useDispatch, useSelector } from "react-redux";
-import {PRODUCTS_MODULE_NAME} from '../store/constants'
 import { useNavigation } from "@react-navigation/core";
+import React from "react";
+import { Platform, StyleSheet, TouchableNativeFeedback, TouchableOpacity, View } from 'react-native';
+import { useDispatch, useSelector } from "react-redux";
+import { COLORS } from "../constants/colors";
+import { addProductToCart } from '../store/actions/cart';
+import { PRODUCTS_MODULE_NAME } from '../store/constants';
 import { DisplayProduct } from "./DisplayProduct";
 import { LocalButton } from "./LocalButton";
-import {View, StyleSheet, Text, Platform, TouchableNativeFeedback, TouchableOpacity} from 'react-native';
-import React from "react";
-import { COLORS } from "../constants/colors";
-import {addProductToCart} from '../store/actions/cart';
-import {Price} from './Price';
+import { Price } from './Price';
+
 
 export const ShopProduct =  ({id}) => {
     const product = useSelector(state => state?.[PRODUCTS_MODULE_NAME]?.products?.[id]);

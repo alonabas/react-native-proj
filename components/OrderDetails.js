@@ -1,10 +1,8 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigation } from "@react-navigation/core";
-import { StyleSheet, Animated, Text, View, Dimensions } from "react-native";
+import { Animated, StyleSheet, View } from "react-native";
+import { OrderContext } from '../contexts/OrderContext';
+import { DisplayOrderItem } from './DisplayOrderItem';
 import { LocalButton } from "./LocalButton";
-import {OrderContext} from '../contexts/OrderContext';
-import {DisplayOrderItem} from './DisplayOrderItem';
 
 const LocalAnimatedButton = ({style={}, title='', onPress=() => {}, animatedValue}) => {
     const baseAnimHeight = React.useRef(new Animated.Value(40)).current;
