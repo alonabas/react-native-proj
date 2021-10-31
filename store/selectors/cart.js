@@ -12,5 +12,4 @@ export const getItemInCart = (id) => (state) => state?.[CART_MODULE_NAME]?.cart?
 
 export const numberOfItemsInCart = () => (state) => Object.values(state?.[CART_MODULE_NAME]?.cart ?? []).reduce((r, e) => r+e?.count, 0)
 
-export const getSortedListOfOrders = () => (state) => (state?.[CART_MODULE_NAME]?.orders ?? [])
-    .sort((e1, e2) => e2.date - e1.date);
+export const allCartItems = () => (state) => state?.[CART_MODULE_NAME]?.cart

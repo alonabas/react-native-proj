@@ -1,6 +1,7 @@
 export const REDUX_MAIN_MODULE_NAME = 'main-redux-module'
 export const PRODUCTS_MODULE_NAME = 'products-redux-module'
 export const CART_MODULE_NAME = 'cart-redux-module'
+export const ORDERS_MODULE_NAME = 'orders-redux-module'
 
 export const SAVE_PRODUCT_ACTION = `${PRODUCTS_MODULE_NAME}__save_product`;
 export const REMOVE_PRODUCT_ACTION = `${PRODUCTS_MODULE_NAME}__remove_product`;

@@ -43,8 +43,6 @@ const OrderItems = ({}) => {
 export const OrderDetails = ({}) => {
     const [showDetails, setShowDetails] = React.useState(false)
     const topAnim = React.useRef(new Animated.Value(0)).current;
-    const navigation = useNavigation();
-    const dispatch = useDispatch();
     const toggle = (isToShow) => {
         if (isToShow) setShowDetails(o => !o);
         Animated.timing(topAnim, {

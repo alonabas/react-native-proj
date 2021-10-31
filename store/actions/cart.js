@@ -13,7 +13,8 @@ export const removeFromCart = (productId) => ({
     id: productId
 })
 
-export const placeOrder = (price) => ({
+export const placeOrder = (price, items=[]) => ({
     type: PLACE_ORDER,
-    price
+    price,
+    items
 });

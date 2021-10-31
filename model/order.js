@@ -8,3 +8,13 @@ export class OrderItem {
         this.price = price
     }
 }
+
+export class Order {
+    constructor(orderId, date, price, items){
+        this.id = orderId;
+        this.date = date;
+        this.price = price;
+        this.items = items;
+    }
+
+}

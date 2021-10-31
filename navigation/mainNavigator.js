@@ -10,6 +10,8 @@ import {CartScreen} from '../screens/CartScreen';
 import {ProductDetailsScreen, ProductDetailsOptions} from '../screens/ProductDetailsScreen';
 import {EditProductScreen, EditProductOptions} from '../screens/EditProductScreen';
 import {COLORS} from '../constants/colors';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { Platform } from 'react-native';
 
 
 const Stack = createStackNavigator();
@@ -71,20 +73,31 @@ const OrdersStackNavigator = ({}) => (
   </Stack.Navigator>
 );
 
+const OrdersIcon = (drawerConfig) => (
+  <Ionicons name={Platform.OS  === 'android' ? 'md-list' : 'ios-list'} size={23} color={drawerConfig.color}/>
+);
 
+const CartIcon = (drawerConfig) => (
+  <Ionicons name={Platform.OS  === 'android' ? 'md-cart': 'ios-cart'} size={23} color={drawerConfig.color}/>
+);
+
+const StoreIcon = (drawerConfig) => (
+  <MaterialIcons name={'store'} size={23} color={drawerConfig.color}/>
+)
 export const MainNavigator = ({}) => {
     return (
         <Drawer.Navigator screenOptions={{
           drawerLabelStyle: {fontFamily: 'author-r', fontSize: 20}
         }}>
           <Drawer.Screen name="shopNav"
-                         options={{title:'Shop', ...hideHeaderOptions}} 
+                         options={{title:'Shop', drawerIcon: CartIcon, ...hideHeaderOptions}} 
                          component={ShopStackNavigator} />
           <Drawer.Screen name="ordersNav" 
-                         options={{title: 'Orders', ...hideHeaderOptions}} 
+            
+                         options={{title: 'Orders', drawerIcon: OrdersIcon , ...hideHeaderOptions}} 
                          component={OrdersStackNavigator} />
           <Drawer.Screen name="productsNav" 
-                         options={{title: 'Manage Products', ...hideHeaderOptions}} 
+                         options={{title: 'Manage Products', drawerIcon: StoreIcon,...hideHeaderOptions}} 
                          component={ProductsStackNavigator} />
         </Drawer.Navigator>
       );

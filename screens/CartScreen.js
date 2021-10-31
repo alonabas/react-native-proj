@@ -1,7 +1,7 @@
 import React from "react";
 import {View, Text, StyleSheet, ScrollView, Animated, Button} from 'react-native';
 import { useDispatch, useSelector } from "react-redux";
-import {sumOfCart, itemsInCart} from '../store/selectors/cart';
+import {sumOfCart, itemsInCart, allCartItems} from '../store/selectors/cart';
 import {globalStyles} from '../constants/styles';
 import {placeOrder} from '../store/actions/cart';
 import { useNavigation } from "@react-navigation/core";
@@ -24,8 +24,9 @@ const Total = ({}) => {
 const PlaceOrder = ({setOrderPlaced=() => {}}) => {
     const dispatch = useDispatch();
     const price = useSelector(sumOfCart());
+    const cartItems = useSelector(allCartItems());
     const press = () => {
-        dispatch(placeOrder(price));
+        dispatch(placeOrder(price, cartItems));
         setOrderPlaced(true);
     }
     return (
