@@ -1,13 +1,13 @@
 
-import { useDispatch, useSelector } from "react-redux";
-import {PRODUCTS_MODULE_NAME} from '../store/constants'
 import { useNavigation } from "@react-navigation/core";
-import { LocalButton } from "./LocalButton";
-import {removeProduct} from '../store/actions/products';
-import {View, StyleSheet, Text, Animated, Dimensions} from 'react-native';
-import {DisplayProduct} from './DisplayProduct';
-import { COLORS } from '../constants/colors';
 import React from "react";
+import { Alert, Animated, Dimensions, StyleSheet, View } from 'react-native';
+import { useDispatch, useSelector } from "react-redux";
+import { COLORS } from '../constants/colors';
+import { removeProduct } from '../store/actions/products';
+import { PRODUCTS_MODULE_NAME } from '../store/constants';
+import { DisplayProduct } from './DisplayProduct';
+import { LocalButton } from "./LocalButton";
 import { Price } from "./Price";
 
 export const MyProduct =  ({id}) => {
@@ -21,6 +21,8 @@ export const MyProduct =  ({id}) => {
     const edit = () => {
         navigation.navigate({name: 'editProduct',params: {productId: id, productName: product?.title}})
     }
+
+    
     const remove = () => {
         Animated.timing(fadeAnim, {
             toValue: Dimensions.get('window').width,
@@ -30,13 +32,31 @@ export const MyProduct =  ({id}) => {
             dispatch(removeProduct(id));
         });
     }
+    const askRemove = () => {
+        Alert.alert(
+            `Remove ${product?.title}`,
+            `Are you sure you want to remove the product?`,
+            [
+              {
+                text: "Cancel",
+                onPress: () => console.log("Cancel Pressed"),
+                style: "cancel"
+              },
+              { 
+                  text: "Remove", 
+                  style: "destructive", 
+                  onPress: () => remove() 
+                }
+            ]
+          );
+    }
     return (
         <Animated.View style={[styles.productContainer, {right: fadeAnim}]}>
             <DisplayProduct product={product}/>
             <View style={styles.buttonsContainer}>
                 <LocalButton title={'Edit'} style={styles.button} onPress={edit}/>
                 <Price value={product?.price} highlight={true}/>
-                <LocalButton title={'Delete'} style={styles.button} onPress={remove}/>
+                <LocalButton title={'Delete'} style={styles.button} onPress={askRemove}/>
             </View>
         </Animated.View>
 

@@ -1,133 +1,124 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/core";
 import React from "react";
-import { Image, ScrollView, StyleSheet, Text, TextInput, TouchableHighlight, View } from 'react-native';
+import { Image, ScrollView, StyleSheet, TouchableHighlight } from 'react-native';
 import { useDispatch, useSelector } from "react-redux";
+import { EditProductInput } from '../components/EditProductInput';
+import { Price } from '../components/Price';
 import { COLORS } from '../constants/colors';
 import { globalStyles } from '../constants/styles';
 import { Product } from "../model/product";
 import { saveProduct } from '../store/actions/products';
-import { PRODUCTS_MODULE_NAME } from '../store/constants';
+import { PRODUCTS_MODULE_NAME, THIS_USER } from '../store/constants';
 
+const UPDATE_PROPERTY = 'edit_product_update_property';
 
-const CreateProductContext = React.createContext({
-    title: '', 
-    setTitle: () => {}, 
-    price: null, 
-    setPrice: () => {}, 
-    description: '', 
-    setDescription: () => {}, 
-    imageUrl: null, 
-    setImageUrl: () => {}
-});
+const changeProductReducer = (state, action) => {
+    switch(action.type) {
+        case UPDATE_PROPERTY:
+            return {
+                ...state, 
+                [action.key]: action.value, 
+                isValid: {...state.isValid, [action.key]: action.isValid}
+            };
+        
+        default:
+            return state;
+    }
+}
 
 const ProductState = ({productId}) => {
     const product = useSelector(state => state?.[PRODUCTS_MODULE_NAME]?.products?.[productId] ?? {});
-    const [title, setTitle] = React.useState(product.title);
-    const [price, setPrice] = React.useState(product.price);
-    const [description, setDescription] = React.useState(product.description);
-    const [imageUrl, setImageUrl] = React.useState(product.imageUrl);
+
+    const [state, dispatch] = React.useReducer(changeProductReducer, {
+        price: product.price,
+        isValid: {
+            price: product.price && product.price > 0,
+            title: product.title && product.title.length > 0,
+            description: product.description && product.description.length > 10,
+            imageUrl: true,
+        },
+        title: product.title,
+        description: product.description,
+        imageUrl: product.imageUrl,
+    });
 
     const navigation = useNavigation();
 
     React.useEffect(() => {
-        const isDisabled = !title || !price || !imageUrl;
-        navigation.setParams({isDisabled, product: new Product(productId, title, price, description, imageUrl)});
-    }, [title, price, description, imageUrl]);
+        const isDisabled = !Object.keys(state.isValid).reduce((a, e) => a && state.isValid[e], true);
+        navigation.setParams({isDisabled, product: new Product(productId, state.title, state.price, state.description, state.imageUrl, THIS_USER)});
+    }, [state.isValid]);
     
     return {
-        title, 
-        setTitle, 
-        price, 
-        setPrice, 
-        description, 
-        setDescription, 
-        imageUrl, 
-        setImageUrl
+        state, dispatch
     }
 }
 
-const Name = ({}) => {
-    const {title, setTitle} = React.useContext(CreateProductContext);
-    return (
-        <View style={styles.editableElementContainer}>
-            <Text style={styles.editableElementText}>Name</Text>
-            <TextInput style={styles.editableInput}
-                       onChangeText={setTitle}
-                       value={title}
-                       placeholder="Your item name"
-            />
-        </View>
-    )
-}
+const PriceDisplay = ({children}) => (
+    <Price highlight={true} value={children}/>
+)
 
-const Price = ({}) => {
-    const {price, setPrice} = React.useContext(CreateProductContext);
-    return (
-        <View style={styles.editableElementContainer}>
-            <Text style={styles.editableElementText}>Price</Text>
-            <TextInput style={styles.editableInput}
-                       onChangeText={setPrice}
-                       keyboardType="numeric"
-                       value={price?.toString()}
-                       placeholder=""
-            />
-        </View>
-    )
-}
-
-const Description = ({}) => {
-    const {description, setDescription} = React.useContext(CreateProductContext);
-    return (
-        <View style={{...styles.editableElementContainer, ...styles.descriptionContainer}}>
-            <Text style={styles.editableElementText}>Description</Text>
-            <View style={styles.editableDescriptionInputContainer}>
-                <TextInput style={styles.editableInput}
-                           onChangeText={setDescription}
-                           value={description}
-                           numberOfLines={3}
-                           multiline={true}
-                           placeholder=""
-                />
-            </View>
-        </View>
-    )
-}
-
-const ImageElement = ({}) => {
-    const {imageUrl, setImageUrl} = React.useContext(CreateProductContext);
-    return (
-        <View style={styles.editableImageContainer}>
-            <View style={styles.editableElementContainer}>
-                <Text style={styles.editableElementText}>Image URL</Text>
-                <TextInput style={styles.editableInput}
-                           onChangeText={setImageUrl}
-                           keyboardType="url"
-                           value={imageUrl}
-                           placeholder="Image url"
-                />
-            </View>
-            {imageUrl &&
-                <Image style={styles.image}
-                    resizeMode={'contain'}
-                    source={{
-                        uri: imageUrl,
-                    }}
-                />
-            }
-        </View>
-    )
-}
 export const EditProductScreen = ({route}) => {
-    const state = ProductState({productId: route?.params?.productId});
+    const {state, dispatch} = ProductState({productId: route?.params?.productId});
+
+    const onChange = ({id, value, isValid}) => {
+        dispatch({type:UPDATE_PROPERTY, key: id, value, isValid})
+    }
     return (
         <ScrollView contentContainerStyle={styles.container}>
-            <CreateProductContext.Provider value={state}>
-                <Name/>
-                <Price/>
-                <Description/>
-                <ImageElement/>
-            </CreateProductContext.Provider>
+                <EditProductInput 
+                    id='title' 
+                    title={'Title'}
+                    onChange={onChange}
+                    value={state.title}
+                    validate={e => !!e}
+                    returnKeyType={'next'}
+                    placeholder="Your item product"/>
+                <EditProductInput 
+                    id='price'
+                    editable={!route?.params?.productId}
+                    DisplayComponent={PriceDisplay}
+                    validate={e => !!e && e > 0}
+                    title={'Price'}
+                    onChange={onChange}
+                    keyboardType="numeric"
+                    returnKeyType={'next'}
+                    value={state.price?.toString()}
+                    placeholder="Product price"
+                />
+                
+                <EditProductInput 
+                    onChange={onChange}
+                    id={'description'}
+                    containerStyle={styles.descriptionContainer}
+                    title={'Description'}
+                    validate={e => !!e && e.length > 10}
+                    inputStyle={styles.editableDescriptionInputContainer}
+                    value={state.description}
+                    numberOfLines={3}
+                    multiline={true}
+                    placeholder="Description"
+                    autoCapitalize="sentences"
+                    autoCorrect
+                />
+                <EditProductInput 
+                    id={'imageUrl'}
+                    title={'Image'}
+                    onChange={onChange}
+                    value={state.imageUrl}
+                    keyboardType="url"
+                    placeholder="Image url"
+                />                    
+                {!!state.imageUrl &&
+                    <Image 
+                        style={styles.image}
+                        resizeMode={'contain'}
+                        source={{
+                            uri: state.imageUrl,
+                        }}
+                    />
+                }
         </ScrollView>
     )
 };
@@ -135,9 +126,9 @@ export const EditProductScreen = ({route}) => {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, 
-        alignItems: 'stretch', 
-        justifyContent: 'flex-start',
+        // flex: 1, 
+        // alignItems: 'stretch', 
+        // justifyContent: 'flex-start',
         marginHorizontal: 10,
         marginVertical: 5
     },
@@ -164,12 +155,20 @@ const styles = StyleSheet.create({
     descriptionContainer: {
         flexDirection: 'column',
         alignItems: 'flex-start',
-        marginRight: 15
+        marginRight: 15,
+        alignItems: 'stretch',
+        flex: 1,
+        // width: '100%',
+        // height: 'auto'
+        // height: '100%'
     },
     editableDescriptionInputContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        paddingTop: 10
+        // alignContent: 'stretch',
+        // width: '100%',
+        paddingTop: 10,
+        height: 'auto'
     },
     editableImageContainer: {
         alignItems: 'center',
@@ -177,8 +176,9 @@ const styles = StyleSheet.create({
         alignItems: 'stretch', 
     },
     image: {
-        width: 'auto',
         maxHeight: 120,
+        minHeight: 120,
+        width: '100%',
         flex: 1,
         alignSelf: 'stretch',
     }
