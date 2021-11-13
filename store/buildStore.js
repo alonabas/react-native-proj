@@ -1,4 +1,5 @@
-import { combineReducers, createStore } from 'redux';
+import { applyMiddleware, combineReducers, createStore } from 'redux';
+import thunk from 'redux-thunk';
 import { CART_MODULE_NAME, ORDERS_MODULE_NAME, PRODUCTS_MODULE_NAME, REDUX_MAIN_MODULE_NAME } from './constants';
 import cartReducer from "./reducers/cart";
 import mainReducer from "./reducers/main";
@@ -13,6 +14,6 @@ const allReducers = combineReducers({
     [ORDERS_MODULE_NAME]: ordersReducer,
 });
   
-const buildStore = () => createStore(allReducers);
+const buildStore = () => createStore(allReducers, applyMiddleware(thunk));
 
 export default buildStore;

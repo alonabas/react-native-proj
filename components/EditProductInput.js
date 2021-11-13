@@ -53,7 +53,7 @@ export const EditProductInput = ({
                         style={{...styles.editableInput, ...inputStyle}}
                         onChangeText={(v) => dispatch({type:SET_VALUE, value:v, validate})}
                         value={state.value}
-                        onBlur={() => dispatch({type:SET_TOUCHED})}
+                        onFocus={() => dispatch({type:SET_TOUCHED})}
                         {...inputProps}
                     />
                     :

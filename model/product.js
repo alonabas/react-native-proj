@@ -1,10 +1,10 @@
 export class Product {
-    constructor(id, title, price, description, imageUrl, owner='other'){
+    constructor({id, body}, title, price, description, imageUrl, owner='other'){
         this.id = id ?? Date.now();
-        this.title = title;
-        this.owner = owner;
-        this.price = price;
-        this.description = description;
-        this.imageUrl = imageUrl;
+        this.title = body?.title ?? title;
+        this.owner = body?.owner ?? owner;
+        this.price = body?.price ?? price;
+        this.description = body?.description ?? description;
+        this.imageUrl = body?.imageUrl ?? imageUrl;
     }
 }

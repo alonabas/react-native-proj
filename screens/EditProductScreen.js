@@ -1,15 +1,15 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/core";
 import React from "react";
-import { Image, ScrollView, StyleSheet, TouchableHighlight } from 'react-native';
+import { ActivityIndicator, Alert, Image, ScrollView, StyleSheet, TouchableHighlight, View } from 'react-native';
 import { useDispatch, useSelector } from "react-redux";
+import DataLoading from '../components/DataLoading';
 import { EditProductInput } from '../components/EditProductInput';
 import { Price } from '../components/Price';
 import { COLORS } from '../constants/colors';
 import { globalStyles } from '../constants/styles';
-import { Product } from "../model/product";
 import { saveProduct } from '../store/actions/products';
-import { PRODUCTS_MODULE_NAME, THIS_USER } from '../store/constants';
+import { PRODUCTS_MODULE_NAME } from '../store/constants';
 
 const UPDATE_PROPERTY = 'edit_product_update_property';
 
@@ -42,13 +42,6 @@ const ProductState = ({productId}) => {
         description: product.description,
         imageUrl: product.imageUrl,
     });
-
-    const navigation = useNavigation();
-
-    React.useEffect(() => {
-        const isDisabled = !Object.keys(state.isValid).reduce((a, e) => a && state.isValid[e], true);
-        navigation.setParams({isDisabled, product: new Product(productId, state.title, state.price, state.description, state.imageUrl, THIS_USER)});
-    }, [state.isValid]);
     
     return {
         state, dispatch
@@ -61,12 +54,55 @@ const PriceDisplay = ({children}) => (
 
 export const EditProductScreen = ({route}) => {
     const {state, dispatch} = ProductState({productId: route?.params?.productId});
+    const {setError, error, setLoading, isLoading} = DataLoading({});
+    const reduxDispatch = useDispatch();
+    const navigation = useNavigation();
+
+    const save = React.useCallback(() => {
+        setLoading(true);
+        reduxDispatch(saveProduct(route?.params?.productId, {
+            price: +state.price,
+            title: state.title,
+            description: state.description,
+            imageUrl: state.imageUrl,
+        })).then(() => {
+            setLoading(false);
+            setTimeout(() => navigation.navigate({name: 'listProducts'}), 50);
+        }).catch(e => setError(e));
+    }, [state]);
+
+    const isDisabled = React.useMemo(() => 
+        !Object.keys(state.isValid).reduce((a, e) => a && state.isValid[e], true), 
+        [state.isValid]);
+
+    React.useEffect(() => {
+        navigation.setParams({isDisabled});
+        navigation.setOptions({
+            headerRight: (props) => (
+                <SaveProductButton {...props} onClick={save} isLoading={isLoading}/>
+            )
+        })
+    }, [save, isDisabled, isLoading]);
+
+    React.useEffect(() => {
+        if (error) Alert.alert(
+            `Failed to save product ${state.title}`,
+            `${error}. Please try again later.`,
+            [
+              {
+                text: "Close",
+                onPress: () => setError(),
+                style: "cancel"
+              }
+            ]
+          );
+    }, [error]);
 
     const onChange = ({id, value, isValid}) => {
         dispatch({type:UPDATE_PROPERTY, key: id, value, isValid})
     }
     return (
-        <ScrollView contentContainerStyle={styles.container}>
+            <ScrollView contentContainerStyle={styles.container}>
                 <EditProductInput 
                     id='title' 
                     title={'Title'}
@@ -119,7 +155,7 @@ export const EditProductScreen = ({route}) => {
                         }}
                     />
                 }
-        </ScrollView>
+            </ScrollView>
     )
 };
 
@@ -184,26 +220,20 @@ const styles = StyleSheet.create({
     }
 });
 
-const SaveProductButton = ({...props}) => {
-    const dispatch = useDispatch();
-    const navigation = useNavigation();
-    const route = useRoute();
-    
-    const product = React.useMemo(() => {
-        return route?.params?.product ?? {};
-    }, [route?.params]);
+const SaveProductButton = ({onClick, isLoading, ...props}) => {
+    const route = useRoute();    
 
-    const press = React.useCallback(() => {
-        dispatch(saveProduct(product.id, product));
-        navigation.navigate({name: 'listProducts'})
-    }, [route.params]);
-
-    const isDisabled = route?.params?.isDisabled ?? true
+    const isDisabled = route?.params?.isDisabled ?? true;
+    if (isLoading) return (
+        <View style={{flex:1, alignItems: 'center', justifyContent: 'center'}}>
+            <ActivityIndicator size='small' color={COLORS.main}/>
+        </View>
+    );
     return (
         <TouchableHighlight {...props}
                             disabled={isDisabled}
                             activeOpacity={0.9} 
-                            onPress={press}
+                            onPress={onClick}
                             title='All my products'
                             underlayColor={COLORS.accent} 
                             style={globalStyles.menuButtonContainer}>
