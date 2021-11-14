@@ -1,5 +1,29 @@
 import { Product } from '../../model/product';
-import { REMOVE_PRODUCT_ACTION, SAVE_PRODUCT_ACTION, THIS_USER } from '../constants';
+import { LOAD_PRODUCTS_ACTION, REMOVE_PRODUCT_ACTION, SAVE_PRODUCT_ACTION, THIS_USER } from '../constants';
+
+export const loadProducts = () => {
+    return async dispatch => {
+        try {
+            const response = await fetch(
+                `https://react-native-proj-shop-app-default-rtdb.firebaseio.com/products.json`, 
+                {
+                    method: 'GET', 
+                    headers: {'Content-Type': 'application/json'},
+                }
+            );
+            if (!response.ok) throw 'Something went wrong!';
+            const result = await response.json();
+            dispatch({
+                type: LOAD_PRODUCTS_ACTION,
+                products: Object.keys(result ?? {})
+                    .reduce((res, id) => ({...res, [id]: new Product({id, body: result[id]})}), {})
+            })
+        } catch (e) {
+            console.log(e)
+            throw e;
+        }
+    }
+}
 
 export function saveProduct(id, payload) {
     const body = {...payload, owner: THIS_USER};
@@ -28,7 +52,22 @@ export function saveProduct(id, payload) {
 
 
 
-export const removeProduct = (id) => ({
-    type: REMOVE_PRODUCT_ACTION,
-    id
-})
+export const removeProduct = (id) => {
+    return async dispatch => {
+        try {
+            const response = await fetch(
+                `https://react-native-proj-shop-app-default-rtdb.firebaseio.com/products/${id}.json`, 
+                {
+                    method: 'DELETE', 
+                    headers: {'Content-Type': 'application/json'},
+                }
+            );
+            if (!response.ok) throw 'Something went wrong!';
+            dispatch({
+                type: REMOVE_PRODUCT_ACTION, id
+            })
+        } catch (e) {
+            throw e;
+        }
+    }   
+}

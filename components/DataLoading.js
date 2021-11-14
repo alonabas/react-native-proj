@@ -1,6 +1,7 @@
 
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
+import { COLORS } from '../constants/colors';
 
 const ERROR = 'set_error';
 const SET_LOADING = 'set_loading';
@@ -41,18 +42,16 @@ const styles = StyleSheet.create({
 export default DataLoading;
 
 
-// const Container = React.memo(({children}) => {
-//     console.log('rerender')
-//     if (state.error) return (
-//         <View style={styles.centered}>
-//             <Text>{state.error}</Text>
-//         </View>
-//     );
-//     if (state.isLoading) return (
-//         <View style={styles.centered}>
-//             <ActivityIndicator size='large' color={COLORS.main}/>
-//         </View>
-//     );
-//     return children;
-    
-// }, [state.error, state.isLoading]);
+export const DataLoadingContainer = ({children, isLoading, error}) => {
+    if (error) return (
+        <View style={styles.centered}>
+            <Text style={{color: 'red'}}>{error}</Text>
+        </View>
+    );
+    if (isLoading) return (
+        <View style={styles.centered}>
+            <ActivityIndicator size='large' color={COLORS.main}/>
+        </View>
+    );
+    return children; 
+}
