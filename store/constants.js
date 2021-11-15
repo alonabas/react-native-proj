@@ -9,7 +9,7 @@ export const ADD_ORDER_ITEM = `${CART_MODULE_NAME}__add_item_to_cart`;
 export const REMOVE_ITEM_FROM_CART = `${CART_MODULE_NAME}__remove_item_from_cart`;
 export const PLACE_ORDER = `${CART_MODULE_NAME}__place_an_order`;
 export const LOAD_PRODUCTS_ACTION = `${PRODUCTS_MODULE_NAME}__load_products`;
-
+export const LOAD_ORDERS_ACTION = `${ORDERS_MODULE_NAME}__load_orders`;
 export const THIS_USER = 'current';
 
 

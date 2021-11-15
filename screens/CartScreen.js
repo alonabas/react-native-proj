@@ -8,7 +8,7 @@ import { NoItems } from '../components/NoItems';
 import { Price } from '../components/Price';
 import { RegularTitle } from '../components/Title';
 import { globalStyles } from '../constants/styles';
-import { placeOrder } from '../store/actions/cart';
+import { placeOrder } from '../store/actions/orders';
 import { allCartItems, itemsInCart, sumOfCart } from '../store/selectors/cart';
 
 const Total = ({}) => {

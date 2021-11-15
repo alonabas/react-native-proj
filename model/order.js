@@ -10,11 +10,11 @@ export class OrderItem {
 }
 
 export class Order {
-    constructor(orderId, date, price, items){
-        this.id = orderId;
-        this.date = date;
-        this.price = price;
-        this.items = items;
+    constructor({id, json}, date, price, items){
+        this.id = id;
+        this.date = date ?? json.date;
+        this.price = price ?? json.price;
+        this.items = items ?? json.items.map(oi => new OrderItem(oi?.productId, oi.count, oi.productTitle, oi.price));
     }
 
 }

@@ -1,7 +1,9 @@
+import { useNavigation } from '@react-navigation/core';
 import moment from 'moment';
 import React from "react";
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from 'react-redux';
+import DataLoading, { DataLoadingContainer } from '../components/DataLoading';
 import { DrawerButton } from '../components/DrawerButton';
 import { NoItems } from "../components/NoItems";
 import { OrderDetails } from '../components/OrderDetails';
@@ -10,6 +12,7 @@ import { RegularTitle } from "../components/Title";
 import { COLORS } from "../constants/colors";
 import { globalStyles } from "../constants/styles";
 import { OrderContext } from '../contexts/OrderContext';
+import * as orderActions from '../store/actions/orders';
 import { getSortedListOfOrders } from '../store/selectors/orders';
 
 export const OrdersScreenOptions = ({navigation}) => ({
@@ -24,7 +27,7 @@ const Order = ({order}) => {
         <OrderContext.Provider value={{order}}>
             <View style={styles.orderContainer}>
                 <View style={styles.row}>
-                    <RegularTitle>Order ID {order.date}</RegularTitle>
+                    <RegularTitle>Order ID {order.id}</RegularTitle>
                     <Price value={order?.price} highlight={true}/>
                     <RegularTitle>{moment.unix(order.date).format("MM/DD/YYYY HH:mm")}</RegularTitle>
                 </View>
@@ -45,10 +48,27 @@ const Orders = ({}) => {
 }
 
 export const OrdersScreen = ({}) => {
+    const {setError, error, setLoading, isLoading} = DataLoading({});
+    const dispatch = useDispatch();
+    const navigation = useNavigation()
+    const loadOrders = React.useCallback(() => {
+        setLoading(true);
+        dispatch(orderActions.loadOrders())
+            .then(() => setLoading(false))
+            .catch(e => setError(e));
+    }, [])
+    
+    React.useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', loadOrders);
+        loadOrders()
+        return unsubscribe;
+    },[]);
     return (
-        <ScrollView contentContainerStyle={{...globalStyles.mainContainer, ... styles.localMainContainer}}>
-            <Orders/>
-        </ScrollView>
+        <DataLoadingContainer isLoading={isLoading} error={error}>
+            <ScrollView contentContainerStyle={{...globalStyles.mainContainer, ... styles.localMainContainer}}>
+                <Orders/>
+            </ScrollView>
+        </DataLoadingContainer>
     )
 };
 
@@ -67,7 +87,8 @@ const styles = StyleSheet.create({
     row: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        paddingBottom: 10
+        paddingBottom: 10,
+        flexWrap: 'wrap'
     },
     
     localMainContainer: {

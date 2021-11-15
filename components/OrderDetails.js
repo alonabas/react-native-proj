@@ -32,7 +32,7 @@ const OrderItems = ({}) => {
     return (
         <View>
             {(order?.items ?? []).map(item => (
-                <DisplayOrderItem item={item} key={item?.id}/>
+                <DisplayOrderItem item={item} key={item?.productId}/>
             ))}
         </View>
     )
