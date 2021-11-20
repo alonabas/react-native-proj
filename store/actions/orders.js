@@ -36,7 +36,6 @@ export const placeOrder = (price, items=[]) => {
                 price: price,
                 items: elems,
             };
-            console.log(body)
             const response = await fetch(
                 `https://react-native-proj-shop-app-default-rtdb.firebaseio.com/orders.json`, 
                 {
