@@ -1,6 +1,7 @@
 import React from 'react';
 import { KeyboardAvoidingView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { COLORS } from '../constants/colors';
+import { RegularTitle } from './Title';
 
 const SET_TOUCHED = 'set_touched';
 const SET_VALUE = 'set_value';
@@ -19,7 +20,7 @@ const reducer = (state, action) => {
     }
 }
 
-export const EditProductInput = ({
+export const CustomInput = ({
     children, 
     id,
     title, 
@@ -47,7 +48,7 @@ export const EditProductInput = ({
     return (
         <KeyboardAvoidingView style={{flex: 1}}>
             <View style={{...styles.editableElementContainer, ...containerStyle}}>
-                <Text style={{...styles.editableElementText, ...titleStyle}}>{title}</Text>
+                <RegularTitle style={{...styles.editableElementText, ...titleStyle}}>{title}</RegularTitle>
                 {editable ?
                     <TextInput 
                         style={{...styles.editableInput, ...inputStyle}}
@@ -75,7 +76,8 @@ const styles = StyleSheet.create({
         fontSize: 12,
         color: 'red',
         top: -10,
-        position: 'relative'
+        position: 'relative',
+        right: -80,
     },
     editableElementContainer: {
         flexDirection: 'row',

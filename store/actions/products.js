@@ -1,5 +1,5 @@
 import { Product } from '../../model/product';
-import { LOAD_PRODUCTS_ACTION, REMOVE_PRODUCT_ACTION, SAVE_PRODUCT_ACTION, THIS_USER } from '../constants';
+import { AUTH_MODULE_NAME, LOAD_PRODUCTS_ACTION, REMOVE_PRODUCT_ACTION, SAVE_PRODUCT_ACTION } from '../constants';
 
 export const loadProducts = () => {
     return async dispatch => {
@@ -26,11 +26,13 @@ export const loadProducts = () => {
 }
 
 export function saveProduct(id, payload) {
-    const body = {...payload, owner: THIS_USER};
-    return async dispatch => {
+    return async (dispatch, getState) => {
         try {
+            const token = getState()?.[AUTH_MODULE_NAME]?.token;
+            const userId = getState()?.[AUTH_MODULE_NAME]?.userId;
+            const body = {...payload, owner: userId};
             const response = await fetch(
-                `https://react-native-proj-shop-app-default-rtdb.firebaseio.com/products${id ? `/${id}` : ''}.json`, 
+                `https://react-native-proj-shop-app-default-rtdb.firebaseio.com/products${id ? `/${id}` : ''}.json?auth=${token}`, 
                 {
                     method: id ? 'PATCH' : 'POST', 
                     headers: {'Content-Type': 'application/json'},
@@ -41,8 +43,8 @@ export function saveProduct(id, payload) {
             const result = await response.json();
             dispatch({
                 type: SAVE_PRODUCT_ACTION,
-                id: result.name,
-                payload: new Product({id: result.name, body})
+                id: result.name ?? id,
+                payload: new Product({id: result.name ?? id, body})
             })
         } catch (e) {
             throw e;
@@ -56,7 +58,7 @@ export const removeProduct = (id) => {
     return async dispatch => {
         try {
             const response = await fetch(
-                `https://react-native-proj-shop-app-default-rtdb.firebaseio.com/products/${id}.json`, 
+                `https://react-native-proj-shop-app-default-rtdb.firebaseio.com/products/${id}.json?auth=${token}`, 
                 {
                     method: 'DELETE', 
                     headers: {'Content-Type': 'application/json'},

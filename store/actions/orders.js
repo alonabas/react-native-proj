@@ -1,12 +1,15 @@
 import moment from 'moment';
 import { Order } from "../../model/order";
-import { LOAD_ORDERS_ACTION, PLACE_ORDER } from '../constants';
+import { AUTH_MODULE_NAME, LOAD_ORDERS_ACTION, PLACE_ORDER } from '../constants';
 
 export const loadOrders = () => {
-    return async dispatch => {
+    return async (dispatch, getState) => {
         try {
+            const userId = getState()?.[AUTH_MODULE_NAME]?.userId;
+            const token = getState()?.[AUTH_MODULE_NAME]?.token;
+
             const response = await fetch(
-                `https://react-native-proj-shop-app-default-rtdb.firebaseio.com/orders.json`, 
+                `https://react-native-proj-shop-app-default-rtdb.firebaseio.com/orders/${userId}.json?auth=${token}`, 
                 {
                     method: 'GET', 
                     headers: {'Content-Type': 'application/json'},
@@ -26,10 +29,12 @@ export const loadOrders = () => {
 }
 
 export const placeOrder = (price, items=[]) => {
-    return async dispatch => {
+    return async (dispatch, getState) => {
         try {
             const date = moment().unix();
-            // console.log(items)
+            const userId = getState()?.[AUTH_MODULE_NAME]?.userId;
+            const token = getState()?.[AUTH_MODULE_NAME]?.token;
+
             const elems = Object.entries(items ?? {}).map(([k,v]) => v);
             const body = {
                 date,
@@ -37,7 +42,7 @@ export const placeOrder = (price, items=[]) => {
                 items: elems,
             };
             const response = await fetch(
-                `https://react-native-proj-shop-app-default-rtdb.firebaseio.com/orders.json`, 
+                `https://react-native-proj-shop-app-default-rtdb.firebaseio.com/orders/${userId}.json?auth=${token}`, 
                 {
                     method: 'POST', 
                     headers: {'Content-Type': 'application/json'},

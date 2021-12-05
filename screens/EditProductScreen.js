@@ -3,8 +3,8 @@ import { useNavigation, useRoute } from "@react-navigation/core";
 import React from "react";
 import { ActivityIndicator, Alert, Image, ScrollView, StyleSheet, TouchableHighlight, View } from 'react-native';
 import { useDispatch, useSelector } from "react-redux";
+import { CustomInput } from '../components/CustomInput';
 import DataLoading from '../components/DataLoading';
-import { EditProductInput } from '../components/EditProductInput';
 import { Price } from '../components/Price';
 import { COLORS } from '../constants/colors';
 import { globalStyles } from '../constants/styles';
@@ -103,7 +103,7 @@ export const EditProductScreen = ({route}) => {
     }
     return (
             <ScrollView contentContainerStyle={styles.container}>
-                <EditProductInput 
+                <CustomInput 
                     id='title' 
                     title={'Title'}
                     onChange={onChange}
@@ -111,7 +111,7 @@ export const EditProductScreen = ({route}) => {
                     validate={e => !!e}
                     returnKeyType={'next'}
                     placeholder="Your item product"/>
-                <EditProductInput 
+                <CustomInput 
                     id='price'
                     editable={!route?.params?.productId}
                     DisplayComponent={PriceDisplay}
@@ -124,7 +124,7 @@ export const EditProductScreen = ({route}) => {
                     placeholder="Product price"
                 />
                 
-                <EditProductInput 
+                <CustomInput 
                     onChange={onChange}
                     id={'description'}
                     containerStyle={styles.descriptionContainer}
@@ -138,7 +138,7 @@ export const EditProductScreen = ({route}) => {
                     autoCapitalize="sentences"
                     autoCorrect
                 />
-                <EditProductInput 
+                <CustomInput 
                     id={'imageUrl'}
                     title={'Image'}
                     onChange={onChange}
