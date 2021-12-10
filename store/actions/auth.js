@@ -1,4 +1,4 @@
-const API_KEY = 'AIzaSyCcQwbcPpQA0mwkib3d4uCN3Wfrgbax_8E'
+const API_KEY;
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import moment from 'moment';
 import { AUTHENTICATE, LOGOUT_ACTION } from '../constants';
