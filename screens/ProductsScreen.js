@@ -1,12 +1,14 @@
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
-import { ScrollView, TouchableHighlight } from 'react-native';
-import { useSelector } from "react-redux";
+import { FlatList, TouchableHighlight } from 'react-native';
+import { useDispatch, useSelector } from "react-redux";
+import DataLoading, { DataLoadingContainer } from '../components/DataLoading';
 import { DrawerButton } from '../components/DrawerButton';
 import { MyProduct } from "../components/MyProduct";
 import { NoItems } from '../components/NoItems';
 import { COLORS } from '../constants/colors';
 import { globalStyles } from '../constants/styles';
+import * as productActions from '../store/actions/products';
 import { getListOfMyProducts } from '../store/selectors/products';
 
 const AddProductButton = (props) => (
@@ -20,18 +22,40 @@ const AddProductButton = (props) => (
 )
 
 export const ProductsScreen = ({navigation}) => {
-    const productIds = useSelector(getListOfMyProducts());
-    if (productIds.length === 0) {
-        return (
-            <NoItems>You don't have any products</NoItems>
-        )
+    const dispatch = useDispatch();
+    const [refreshing, setRefreshing] = React.useState(false);
+    const {setError, error, setLoading, isLoading} = DataLoading({});
+
+    const loadProducts = React.useCallback(() => {
+        setLoading(true);
+        return dispatch(productActions.loadProducts())
+            .then(() => setLoading(false))
+            .catch(e => setError(e));
+    }, []);
+    const refresh = () => {
+        setRefreshing(true);
+        loadProducts().then(() => setRefreshing(false));
     }
+    
+    React.useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', loadProducts);
+        loadProducts()
+        return unsubscribe;
+    },[]);
+    const productIds = useSelector(getListOfMyProducts());
+
     return (
-        <ScrollView >
-            {productIds.map(e => (
-                <MyProduct id={e} key={e}/>
-            ))}
-        </ScrollView>
+        <DataLoadingContainer isLoading={isLoading} error={error}>
+
+        <FlatList data={productIds} 
+                  refreshing={refreshing}
+                  ListEmptyComponent={() => <NoItems>You don't have any products</NoItems> }
+                  onRefresh={refresh}
+                  renderItem={({item}) => <MyProduct id={item} key={item}/>}
+                  keyExtractor={e => e}
+        />
+        </DataLoadingContainer>
+       
     )
 };
 

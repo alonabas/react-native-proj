@@ -86,7 +86,7 @@ const AuthScreen = ({}) => {
 
     return (
         <KeyboardAvoidingView style={{flex: 1}}>
-            <ScrollView contentContainerStyle={styles.scrollView}>
+            <ScrollView contentContainerStyle={styles.scrollView} keyboardShouldPersistTaps={'handled'}>
                 <LinearGradient
                     colors={["#f1d29b", COLORS.accent, "#f1d29b"]}
                     style={styles.card}>

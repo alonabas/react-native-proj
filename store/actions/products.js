@@ -2,10 +2,12 @@ import { Product } from '../../model/product';
 import { AUTH_MODULE_NAME, LOAD_PRODUCTS_ACTION, REMOVE_PRODUCT_ACTION, SAVE_PRODUCT_ACTION } from '../constants';
 
 export const loadProducts = () => {
-    return async dispatch => {
+    return async (dispatch, getState) => {
         try {
+            const token = getState()?.[AUTH_MODULE_NAME]?.token;
+
             const response = await fetch(
-                `https://react-native-proj-shop-app-default-rtdb.firebaseio.com/products.json`, 
+                `https://react-native-proj-shop-app-default-rtdb.firebaseio.com/products.json?auth=${token}`, 
                 {
                     method: 'GET', 
                     headers: {'Content-Type': 'application/json'},
