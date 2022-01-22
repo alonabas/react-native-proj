@@ -45,15 +45,19 @@ export const ProductsScreen = ({navigation}) => {
     const productIds = useSelector(getListOfMyProducts());
 
     return (
-        <DataLoadingContainer isLoading={isLoading} error={error}>
+        <DataLoadingContainer 
+            isLoading={isLoading} 
+            error={error} 
+        >
 
-        <FlatList data={productIds} 
-                  refreshing={refreshing}
-                  ListEmptyComponent={() => <NoItems>You don't have any products</NoItems> }
-                  onRefresh={refresh}
-                  renderItem={({item}) => <MyProduct id={item} key={item}/>}
-                  keyExtractor={e => e}
-        />
+            <FlatList data={productIds} 
+                    refreshing={refreshing}
+                    ListEmptyComponent={() => <NoItems>You don't have any products</NoItems> }
+                    onRefresh={refresh}
+                    contentContainerStyle={globalStyles.mainContainer}
+                    renderItem={({item}) => <MyProduct id={item} key={item}/>}
+                    keyExtractor={e => e}
+            />
         </DataLoadingContainer>
        
     )

@@ -1,7 +1,7 @@
-const API_KEY;
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import moment from 'moment';
-import { AUTHENTICATE, LOGOUT_ACTION } from '../constants';
+import { FIREBASE_KEY as API_KEY } from '../../env';
+import { AUTHENTICATE, LOGOUT_ACTION, SET_INIT_FALSE } from '../constants';
 
 export const authenticate = (idToken, localId, expiration) => {
     return async dispatch => {
@@ -95,3 +95,6 @@ export const singIn = (email, password) => {
         }  
     };
 };
+
+
+export const resetInit = () => ({type: SET_INIT_FALSE})

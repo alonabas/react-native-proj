@@ -1,4 +1,3 @@
-import { useNavigation } from '@react-navigation/core';
 import {
     DrawerContentScrollView,
     DrawerItemList
@@ -11,13 +10,8 @@ import { LocalButton } from "./LocalButton";
 
 const DrawerContent = (props) => {
     const dispatch = useDispatch();
-    const navigation = useNavigation()
     const logout = () => {
-        dispatch(logoutRedux())
-        navigation.reset({
-            index: 0, 
-            routes: [{name:'auth'}]
-        });
+        dispatch(logoutRedux());
     }
     return (
         <DrawerContentScrollView {...props}>

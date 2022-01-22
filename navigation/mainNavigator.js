@@ -6,6 +6,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import moment from 'moment';
 import React from "react";
 import { Platform } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import DrawerContent from '../components/DrawerContent';
 import { COLORS } from '../constants/colors';
 import AuthScreen from '../screens/AuthScreen';
@@ -16,6 +17,8 @@ import { OrdersScreen, OrdersScreenOptions } from '../screens/OrdersScreen';
 import { ProductDetailsOptions, ProductDetailsScreen } from '../screens/ProductDetailsScreen';
 import { ProductsScreen, ProductsScreenOptions } from '../screens/ProductsScreen';
 import { ShopScreen, ShopScreenOptions } from '../screens/ShopScreen';
+import { logout } from '../store/actions/auth';
+import { AUTH_MODULE_NAME } from '../store/constants';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -116,40 +119,37 @@ const AuthNavigator = ({}) => (
 );
 
 
-const screenListeners = ({ navigation }) => ({
+const screenListeners = (logoutFn) => ({ navigation }) => ({
   state: async (e) => {
     
     // Do something with the state
     // console.log('state changed', e.data);
-
+    // return;
     const routes = e?.data?.state?.routes;
     const currentRoute = routes?.[routes.length - 1]?.['name']
     if (currentRoute && currentRoute !== 'init' && currentRoute !== 'auth') {
       const value = await AsyncStorage.getItem('userData');
-      if (value === null) 
-        navigation.reset({
-          index: 0, 
-          routes: [{name:'auth'}]
-        });
+      if (value === null) logoutFn()
       const {idToken, localId, expiration} = JSON.parse(value);
+      console.log(moment.utc(expiration))
+      console.log(moment.utc())
       if (!idToken || !localId || moment().isAfter(moment.utc(expiration))){
-        navigation.reset({
-          index: 0, 
-          routes: [{name:'auth'}]
-      });
+        logoutFn()
       }
     }
-      
   }
 })
 
 export const MainNavigator = ({}) => {
+    const {userId, isInit} = useSelector(state => state?.[AUTH_MODULE_NAME]);
+    const dispatch = useDispatch();
+    const logoutFn = () => dispatch(logout())
     return (
         <Stack.Navigator screenOptions={hideHeaderOptions} 
-                         screenListeners={screenListeners}>
-          <Stack.Screen name="init" component={InitScreen} />
-          <Stack.Screen name="auth" component={AuthNavigator} />
-          <Stack.Screen name="app" component={AppNavigator} />
+                         screenListeners={screenListeners(logoutFn)}>
+          {isInit && <Stack.Screen name="init" component={InitScreen} />}
+          {!isInit && !userId && <Stack.Screen name="auth" component={AuthNavigator} />}
+          {userId && !isInit && <Stack.Screen name="app" component={AppNavigator} />}
         </Stack.Navigator>
       );
 }

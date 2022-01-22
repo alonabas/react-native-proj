@@ -75,9 +75,6 @@ const AuthScreen = ({}) => {
         const submitAction = isSignUp ? singUp : singIn;
         setLoading(true);
         dispatchRedux(submitAction(state.user, state.pass))
-            .then(() => {
-                navigation.navigate({name: 'app'});
-            })
             .catch(e => {
                 setError(e);
                 setLoading(false);

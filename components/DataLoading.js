@@ -42,14 +42,14 @@ const styles = StyleSheet.create({
 export default DataLoading;
 
 
-export const DataLoadingContainer = ({children, isLoading, error}) => {
+export const DataLoadingContainer = ({children, isLoading, error, style={}}) => {
     if (error) return (
-        <View style={styles.centered}>
+        <View style={{...styles.centered, ...style}}>
             <Text style={{color: 'red'}}>{error}</Text>
         </View>
     );
     if (isLoading) return (
-        <View style={styles.centered}>
+        <View style={{...styles.centered, ...style}}>
             <ActivityIndicator size='large' color={COLORS.main}/>
         </View>
     );

@@ -14,7 +14,7 @@ export const LOAD_ORDERS_ACTION = `${ORDERS_MODULE_NAME}__load_orders`;
 
 export const AUTHENTICATE = `${AUTH_MODULE_NAME}__authenticate`;
 export const LOGOUT_ACTION = `${AUTH_MODULE_NAME}__logout`;
-
+export const SET_INIT_FALSE = `${AUTH_MODULE_NAME}__set_init_false`;
 export const THIS_USER = 'current';
 
 
